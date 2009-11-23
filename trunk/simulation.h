@@ -18,20 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "mainwindow.h"
-#include "simulation.h"
+#ifndef SIMULATION_H
+#define SIMULATION_H
 
-#include <QApplication>
+/*************************************************************************************/
+/*********************** Holds the simulation for QRoadTraffic ***********************/
+/*************************************************************************************/
 
-int main(int argc, char *argv[])
+class Simulation
 {
-  // create main event loop handler and parse command line arguments
-  QApplication app(argc, argv);
+public:
+  Simulation();                       // constructor
 
-  // create application main window & enter main event loop
-  Simulation sim;
-  MainWindow window;
-  window.show();
-  return app.exec();
-}
+  float Simulation::distribute(float in, float shape);
+};
 
+#endif // SIMULATION_H
