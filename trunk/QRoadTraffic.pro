@@ -5,6 +5,6 @@ TARGET = QRoadTraffic
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
-    simulation.cpp
+    qroadtrafficapplication.cpp
 HEADERS += mainwindow.h \
-    simulation.h
+    qroadtrafficapplication.h

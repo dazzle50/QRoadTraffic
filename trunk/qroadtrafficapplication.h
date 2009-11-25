@@ -18,20 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SIMULATION_H
-#define SIMULATION_H
+#ifndef QROADTRAFFICAPPLICATION_H
+#define QROADTRAFFICAPPLICATION_H
+
+class Road;
+class Junction;
+
+#include <QApplication>
 
 /*************************************************************************************/
-/*********************** Holds the simulation for QRoadTraffic ***********************/
+/************************ Main QRoadTraffic application class ************************/
 /*************************************************************************************/
 
-class Simulation
+class QRoadTrafficApplication : public QApplication
 {
 public:
-  Simulation();                       // constructor
+  QRoadTrafficApplication( int argc, char *argv[] );            // constructor
 
-  float distribute(float, float);
-  float distribute(float, float, float, float);
+  float distribute( float, float );
+  float distribute( float, float, float, float );
+
+  QList<Road*>         roadList;        // list of one-way roads
+  QList<Junction*>     junctionList;    // list of road junctions
+  int                  time;            // simulated time
 };
 
-#endif // SIMULATION_H
+#endif // QROADTRAFFICAPPLICATION_H

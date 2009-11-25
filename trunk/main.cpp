@@ -19,17 +19,14 @@
  ***************************************************************************/
 
 #include "mainwindow.h"
-#include "simulation.h"
-
-#include <QApplication>
+#include "qroadtrafficapplication.h"
 
 int main(int argc, char *argv[])
 {
   // create main event loop handler and parse command line arguments
-  QApplication app(argc, argv);
+  QRoadTrafficApplication app(argc, argv);
 
   // create application main window & enter main event loop
-  Simulation sim;
   MainWindow window;
   window.show();
   return app.exec();
