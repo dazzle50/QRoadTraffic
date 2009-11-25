@@ -32,7 +32,7 @@ Simulation::Simulation()
 {
   float i;
   for( i = 0.0 ; i < 1.000001 ; i+=0.01 )
-    distribute( i, 0.1 );
+    distribute( i, 0.1, 30.0, 70.0 );
 }
 
 /************************************ distribute *************************************/
@@ -48,6 +48,23 @@ float Simulation::distribute(float in, float shape)
   else
     out = 1.0-(2.0*shape*shape+shape)*((0.5/shape)-0.5/(1.0-in+shape));
 
-  qDebug("simDistribute %f %f => %f", in, shape, out);
+  qDebug("distribute %f %f => %f", in, shape, out);
   return out;
+}
+
+/************************************ distribute *************************************/
+
+float Simulation::distribute(float in, float shape, float min, float max)
+{
+  // Parameter "in" must be between 0 and 1
+  // Parameter "shape" must be positive, typically 0.1
+  // =IF(A<0.5;(2*bb*bb+bb)*((1/2/bb)-1/(2*A+2*bb));1-(2*bb*bb+bb)*((1/2/bb)-1/(2*(1-A)+2*bb)))
+  float out;
+  if (in < 0.5)
+    out = (2.0*shape*shape+shape)*((0.5/shape)-0.5/(in+shape));
+  else
+    out = 1.0-(2.0*shape*shape+shape)*((0.5/shape)-0.5/(1.0-in+shape));
+
+  qDebug("distribute %f %f %f %f => %f", in, shape, min, max, min+out*(max-min));
+  return min + out*(max-min);
 }

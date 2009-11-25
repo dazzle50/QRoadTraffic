@@ -30,7 +30,8 @@ class Simulation
 public:
   Simulation();                       // constructor
 
-  float Simulation::distribute(float in, float shape);
+  float distribute(float, float);
+  float distribute(float, float, float, float);
 };
 
 #endif // SIMULATION_H
