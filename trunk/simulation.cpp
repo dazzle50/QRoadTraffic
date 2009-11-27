@@ -30,6 +30,10 @@
 
 Simulation::Simulation()
 {
+  // initialise private variables
+  m_time = 0;
+
+  // DUMMY test code
   float i;
   for( i = 0.0 ; i < 1.000001 ; i+=0.01 )
     distribute( i, 0.1, 30.0, 70.0 );
@@ -39,16 +43,28 @@ Simulation::Simulation()
 
 float Simulation::distribute(float in, float shape)
 {
-  // Parameter "in" must be between 0 and 1
-  // Parameter "shape" must be positive, typically 0.1
+  // returns float between 0 and 1 by distributing 'in' parameter to curve defined by 'shape' parameter
   // =IF(A<0.5;(2*bb*bb+bb)*((1/2/bb)-1/(2*A+2*bb));1-(2*bb*bb+bb)*((1/2/bb)-1/(2*(1-A)+2*bb)))
+
+  if ( in<0.0 || in>1.0 )
+  {
+    qDebug("WARNING Simulation::distribute in=%f - must be between 0.0 and 1.0", in);
+    return 0.0;
+  }
+
+  if ( shape <= 0.0 )
+  {
+    qDebug("WARNING Simulation::distribute shape=%f - must be greater than zero, typically 0.1", shape);
+    return 0.0;
+  }
+
   float out;
   if (in < 0.5)
     out = (2.0*shape*shape+shape)*((0.5/shape)-0.5/(in+shape));
   else
     out = 1.0-(2.0*shape*shape+shape)*((0.5/shape)-0.5/(1.0-in+shape));
 
-  qDebug("distribute %f %f => %f", in, shape, out);
+  // qDebug("DEBUG Simulation::distribute %f %f => %f", in, shape, out);
   return out;
 }
 
@@ -56,15 +72,9 @@ float Simulation::distribute(float in, float shape)
 
 float Simulation::distribute(float in, float shape, float min, float max)
 {
-  // Parameter "in" must be between 0 and 1
-  // Parameter "shape" must be positive, typically 0.1
-  // =IF(A<0.5;(2*bb*bb+bb)*((1/2/bb)-1/(2*A+2*bb));1-(2*bb*bb+bb)*((1/2/bb)-1/(2*(1-A)+2*bb)))
-  float out;
-  if (in < 0.5)
-    out = (2.0*shape*shape+shape)*((0.5/shape)-0.5/(in+shape));
-  else
-    out = 1.0-(2.0*shape*shape+shape)*((0.5/shape)-0.5/(1.0-in+shape));
+  // returns float between 'min' and 'max' by distributing 'in' parameter to curve defined by 'shape' parameter
+  float out = distribute( in, shape );
 
-  qDebug("distribute %f %f %f %f => %f", in, shape, min, max, min+out*(max-min));
+  // qDebug("DEBUG Simulation::distribute %f %f %f %f => %f", in, shape, min, max, min+out*(max-min));
   return min + out*(max-min);
 }
