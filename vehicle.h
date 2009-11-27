@@ -18,30 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SIMULATION_H
-#define SIMULATION_H
-
-class Road;
-class Junction;
-
-#include <QList>
+#ifndef VEHICLE_H
+#define VEHICLE_H
 
 /*************************************************************************************/
-/*********************** Holds the simulation for QRoadTraffic ***********************/
+/************************* Vehicle that travels along a road *************************/
 /*************************************************************************************/
 
-class Simulation
+class Vehicle
 {
 public:
-  Simulation();                                   // constructor
-
-  float distribute(float, float);                 // distribute 0->1 to new curve 0->1
-  float distribute(float, float, float, float);   // distribute 0->1 to new curve min->max
-
-private:
-  int                  m_time;            // simulated time
-  QList<Road*>         m_roadList;        // list of one-way roads
-  QList<Junction*>     m_junctionList;    // list of road junctions
+  Vehicle();                                 // constructor
 };
 
-#endif // SIMULATION_H
+#endif // VEHICLE_H
