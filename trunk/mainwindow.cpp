@@ -31,12 +31,14 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
-  // add drop down menus (currently empty)
-  menuBar()->addMenu("&File");
-  menuBar()->addMenu("&Edit");
-  menuBar()->addMenu("&View");
-  menuBar()->addMenu("&Simulate");
-  menuBar()->addMenu("&Help");
+  // add drop down menus
+  QMenu* fileMenu = menuBar()->addMenu("&File");
+  QMenu* editMenu = menuBar()->addMenu("&Edit");
+  QMenu* viewMenu = menuBar()->addMenu("&View");
+  QMenu* simMenu  = menuBar()->addMenu("&Simulate");
+  QMenu* helpMenu = menuBar()->addMenu("&Help");
+
+  helpMenu->addAction("Build with Qt"QT_VERSION_STR);
 
   // add status bar message
   statusBar()->showMessage("QRoadTraffic has started");

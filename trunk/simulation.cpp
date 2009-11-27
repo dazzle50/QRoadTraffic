@@ -18,19 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qroadtrafficapplication.h"
+#include "simulation.h"
+
+#include <QDebug>
 
 /*************************************************************************************/
-/************************ Main QRoadTraffic application class ************************/
+/*********************** Holds the simulation for QRoadTraffic ***********************/
 /*************************************************************************************/
 
 /************************************ constuctor *************************************/
 
-QRoadTrafficApplication::QRoadTrafficApplication( int argc, char *argv[] )
-    : QApplication(argc, argv)
+Simulation::Simulation()
 {
-  qDebug("--------------------- QRoadTrafficApplication()");
-
   float i;
   for( i = 0.0 ; i < 1.000001 ; i+=0.01 )
     distribute( i, 0.1, 30.0, 70.0 );
@@ -38,7 +37,7 @@ QRoadTrafficApplication::QRoadTrafficApplication( int argc, char *argv[] )
 
 /************************************ distribute *************************************/
 
-float QRoadTrafficApplication::distribute( float in, float shape )
+float Simulation::distribute(float in, float shape)
 {
   // Parameter "in" must be between 0 and 1
   // Parameter "shape" must be positive, typically 0.1
@@ -55,7 +54,7 @@ float QRoadTrafficApplication::distribute( float in, float shape )
 
 /************************************ distribute *************************************/
 
-float QRoadTrafficApplication::distribute( float in, float shape, float min, float max )
+float Simulation::distribute(float in, float shape, float min, float max)
 {
   // Parameter "in" must be between 0 and 1
   // Parameter "shape" must be positive, typically 0.1
