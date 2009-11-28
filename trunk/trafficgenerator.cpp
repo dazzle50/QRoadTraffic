@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "trafficgenerator.h"
+#include "vehicle.h"
+
+#include <QDebug>
 
 /*************************************************************************************/
 /********************** Generic traffic generator for junctions **********************/
@@ -28,4 +31,16 @@
 
 TrafficGenerator::TrafficGenerator()
 {
+}
+
+/************************************* generate **************************************/
+
+Vehicle*  TrafficGenerator::generate( int time )
+{
+  // returns generated vehicle or zero if none
+  Vehicle*  vehicle = 0;
+  if ( time%100 == 9 ) vehicle = new Vehicle();
+
+  qDebug("DEBUG TrafficGenerator::generate %i => %p", time, vehicle);
+  return vehicle;
 }

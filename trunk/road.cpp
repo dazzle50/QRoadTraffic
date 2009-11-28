@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "road.h"
+#include "vehicle.h"
+#include "junction.h"
 
 #include <QDebug>
 
@@ -28,11 +30,14 @@
 
 /************************************ constuctor *************************************/
 
-Road::Road( Junction* start, Junction* end )
+Road::Road( Junction* start, int weight, Junction* end )
 {
   // set private variables
   m_startJunction = start;
   m_endJunction   = end;
+
+  // register road with start junction with weight
+  start->associate( this, weight );
 }
 
 /*************************************** tick ****************************************/
@@ -42,4 +47,6 @@ void Road::tick()
   // simulate 1 time unit step
   qDebug("DEBUG Road::tick");
 
+  foreach( Vehicle* vehicle, m_vehicleList )
+    vehicle->tick();
 }

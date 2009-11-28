@@ -36,6 +36,7 @@ public:
   Simulation();                                   // constructor
 
   void  tick();                                   // simulate 1 time unit step
+  float rand();                                   // return random number 0->1
   float distribute(float, float);                 // distribute 0->1 to new curve 0->1
   float distribute(float, float, float, float);   // distribute 0->1 to new curve min->max
 
@@ -44,5 +45,7 @@ private:
   QList<Road*>         m_roadList;        // list of one-way roads
   QList<Junction*>     m_junctionList;    // list of road junctions
 };
+
+extern Simulation* sim;
 
 #endif // SIMULATION_H

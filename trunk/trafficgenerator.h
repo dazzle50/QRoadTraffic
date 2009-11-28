@@ -21,6 +21,8 @@
 #ifndef TRAFFICGENERATOR_H
 #define TRAFFICGENERATOR_H
 
+class Vehicle;
+
 /*************************************************************************************/
 /********************** Generic traffic generator for junctions **********************/
 /*************************************************************************************/
@@ -29,6 +31,8 @@ class TrafficGenerator
 {
 public:
   TrafficGenerator();                   // constructor
+
+  Vehicle*  generate( int );            // returns generated vehicle or zero if none
 };
 
 #endif // TRAFFICGENERATOR_H

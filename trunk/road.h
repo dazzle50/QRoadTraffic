@@ -22,6 +22,9 @@
 #define ROAD_H
 
 class Junction;
+class Vehicle;
+
+#include <QList>
 
 /*************************************************************************************/
 /************************ Road along which vehicles can travel ***********************/
@@ -30,13 +33,14 @@ class Junction;
 class Road
 {
 public:
-  Road( Junction*, Junction* );                        // constructor
+  Road( Junction*, int, Junction* );        // constructor
 
-  void  tick();                       // simulate 1 time unit step
+  void  tick();                             // simulate 1 time unit step
 
 private:
-  Junction*   m_startJunction;        // road start junction
-  Junction*   m_endJunction;          // road end junction
+  Junction*         m_startJunction;        // road start junction
+  Junction*         m_endJunction;          // road end junction
+  QList<Vehicle*>   m_vehicleList;          // list of vehicles on this road
 };
 
 #endif // ROAD_H

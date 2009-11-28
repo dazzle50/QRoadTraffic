@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "vehicle.h"
+#include "simulation.h"
+
+#include <QDebug>
 
 /*************************************************************************************/
 /************************* Vehicle that travels along a road *************************/
@@ -28,4 +31,21 @@
 
 Vehicle::Vehicle()
 {
+  // construct random vehicle
+  float rand = sim->rand();
+  m_length      = sim->distribute( rand, 0.1, 1.0, 5.0 );
+  m_gapDistance = sim->distribute( rand, 0.1, 0.5, 2.0 );
+  m_gapTime     = sim->distribute( 1-rand, 0.1, 1.0, 3.0 );
+  m_speedFactor = sim->distribute( 1-rand, 0.1, 0.5, 1.5 );
+  qDebug("DEBUG Vehicle constructor len=%f gapD=%f gapT=%f speed=%f",
+         m_length, m_gapDistance, m_gapTime, m_speedFactor);
+}
+
+/*************************************** tick ****************************************/
+
+void Vehicle::tick()
+{
+  // simulate 1 time unit step
+  qDebug("DEBUG Vehicle::tick");
+
 }

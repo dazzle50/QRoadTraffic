@@ -51,16 +51,16 @@ Simulation::Simulation()
   m_junctionList.append( j3 );
 
   // create roads connecting the junctions
-  Road*  r12 = new Road( j1, j2 );
-  Road*  r21 = new Road( j2, j1 );
-  Road*  r23 = new Road( j2, j3 );
-  Road*  r31 = new Road( j3, j1 );
+  Road*  r12 = new Road( j1, 100, j2 );
+  Road*  r21 = new Road( j2, 100, j1 );
+  Road*  r23 = new Road( j2, 100, j3 );
+  Road*  r31 = new Road( j3, 100, j1 );
   m_roadList.append( r12 );
   m_roadList.append( r21 );
   m_roadList.append( r23 );
   m_roadList.append( r31 );
 
-  for( int count=0 ; count<100 ; count++ )
+  for( int count=0 ; count<10 ; count++ )
     tick();
 }
 
@@ -104,6 +104,14 @@ float Simulation::distribute(float in, float shape, float min, float max)
   return min + out*(max-min);
 }
 
+/*************************************** rand ****************************************/
+
+float Simulation::rand()
+{
+  // returns a random number between 0.0 and 1.0
+  return float(qrand()) / RAND_MAX;
+}
+
 /*************************************** tick ****************************************/
 
 void Simulation::tick()
@@ -114,7 +122,7 @@ void Simulation::tick()
   foreach( Road* road, m_roadList )
     road->tick();
   foreach( Junction* junction, m_junctionList )
-    junction->tick();
+    junction->tick( m_time );
 
   m_time++;
 }
