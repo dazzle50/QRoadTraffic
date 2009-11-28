@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "simulation.h"
+#include "junction.h"
+#include "road.h"
+#include "trafficgenerator.h"
 
 #include <QDebug>
 
@@ -33,10 +36,32 @@ Simulation::Simulation()
   // initialise private variables
   m_time = 0;
 
-  // DUMMY test code
-  float i;
-  for( i = 0.0 ; i < 1.000001 ; i+=0.01 )
-    distribute( i, 0.1, 30.0, 70.0 );
+  // DUMMY test code ###########################################
+  // create traffic generator
+  TrafficGenerator*  gen = new TrafficGenerator();
+
+  // create 3 junctions
+  //                j2
+  //       j1                j3
+  Junction*  j1 = new Junction( 200, 400, gen );
+  Junction*  j2 = new Junction( 400, 200, gen );
+  Junction*  j3 = new Junction( 600, 400, gen );
+  m_junctionList.append( j1 );
+  m_junctionList.append( j2 );
+  m_junctionList.append( j3 );
+
+  // create roads connecting the junctions
+  Road*  r12 = new Road( j1, j2 );
+  Road*  r21 = new Road( j2, j1 );
+  Road*  r23 = new Road( j2, j3 );
+  Road*  r31 = new Road( j3, j1 );
+  m_roadList.append( r12 );
+  m_roadList.append( r21 );
+  m_roadList.append( r23 );
+  m_roadList.append( r31 );
+
+  for( int count=0 ; count<100 ; count++ )
+    tick();
 }
 
 /************************************ distribute *************************************/
@@ -77,4 +102,19 @@ float Simulation::distribute(float in, float shape, float min, float max)
 
   // qDebug("DEBUG Simulation::distribute %f %f %f %f => %f", in, shape, min, max, min+out*(max-min));
   return min + out*(max-min);
+}
+
+/*************************************** tick ****************************************/
+
+void Simulation::tick()
+{
+  // simulate 1 time unit step
+  qDebug("DEBUG Simulation::tick - time=%i", m_time);
+
+  foreach( Road* road, m_roadList )
+    road->tick();
+  foreach( Junction* junction, m_junctionList )
+    junction->tick();
+
+  m_time++;
 }

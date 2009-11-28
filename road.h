@@ -21,6 +21,8 @@
 #ifndef ROAD_H
 #define ROAD_H
 
+class Junction;
+
 /*************************************************************************************/
 /************************ Road along which vehicles can travel ***********************/
 /*************************************************************************************/
@@ -28,7 +30,13 @@
 class Road
 {
 public:
-  Road();                                   // constructor
+  Road( Junction*, Junction* );                        // constructor
+
+  void  tick();                       // simulate 1 time unit step
+
+private:
+  Junction*   m_startJunction;        // road start junction
+  Junction*   m_endJunction;          // road end junction
 };
 
 #endif // ROAD_H

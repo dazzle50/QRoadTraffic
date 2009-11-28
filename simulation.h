@@ -35,6 +35,7 @@ class Simulation
 public:
   Simulation();                                   // constructor
 
+  void  tick();                                   // simulate 1 time unit step
   float distribute(float, float);                 // distribute 0->1 to new curve 0->1
   float distribute(float, float, float, float);   // distribute 0->1 to new curve min->max
 
