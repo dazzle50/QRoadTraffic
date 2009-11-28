@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "junction.h"
+#include "trafficgenerator.h"
+//#include "vehicle.h"
+//#include "road.h"
 
 #include <QDebug>
 
@@ -36,11 +39,33 @@ Junction::Junction( float x, float y, TrafficGenerator* gen )
   m_trafficGenerator = gen;
 }
 
+/************************************ associate **************************************/
+
+void Junction::associate( Road* road, int weight )
+{
+  // register road & traffic weight with start junction
+  m_roadList.append( road );
+  m_weightList.append( weight );
+}
+
 /*************************************** tick ****************************************/
 
-void Junction::tick()
+void Junction::tick( int time )
 {
   // simulate 1 time unit step
   qDebug("DEBUG Junction::tick");
+
+  if ( m_roadList.empty() ) return;
+  Vehicle*  vehicle = m_trafficGenerator->generate( time );
+  if ( vehicle == 0 ) return;
+
+  // TODO need to decide on which road to place vehicle!
+  if ( m_roadList.count() == 1 )
+  {
+
+
+  }
+
+
 
 }

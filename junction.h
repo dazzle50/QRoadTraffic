@@ -22,6 +22,9 @@
 #define JUNCTION_H
 
 class TrafficGenerator;
+class Road;
+
+#include<QList>
 
 /*************************************************************************************/
 /**************************** Junction at each end of road ***************************/
@@ -32,12 +35,15 @@ class Junction
 public:
   Junction( float, float, TrafficGenerator* );                 // constructor
 
-  void  tick();                               // simulate 1 time unit step
+  void  tick( int );                          // simulate 1 time unit step
+  void  associate( Road*, int );              // associate road with start junction
 
 private:
   float               m_x;                    // junction location x coordinate
   float               m_y;                    // junction location y coordinate
   TrafficGenerator*   m_trafficGenerator;     // traffic generator
+  QList<Road*>        m_roadList;             // list of roads attached to junction
+  QList<int>          m_weightList;           // list of road weights attached to junction
 };
 
 #endif // JUNCTION_H

@@ -29,6 +29,14 @@ class Vehicle
 {
 public:
   Vehicle();                                 // constructor
+
+  void  tick();                              // simulate 1 time unit step
+
+private:
+  float  m_length;                  // length of vehicle
+  float  m_gapDistance;             // minimum gap in queueing traffic
+  float  m_gapTime;                 // minimum gap in time units in moving traffic
+  float  m_speedFactor;             // vehicle speed factor vs road speed
 };
 
 #endif // VEHICLE_H
