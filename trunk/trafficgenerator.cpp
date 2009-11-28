@@ -18,29 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "junction.h"
-
-#include <QDebug>
+#include "trafficgenerator.h"
 
 /*************************************************************************************/
-/**************************** Junction at each end of road ***************************/
+/********************** Generic traffic generator for junctions **********************/
 /*************************************************************************************/
 
 /************************************ constuctor *************************************/
 
-Junction::Junction( float x, float y, TrafficGenerator* gen )
+TrafficGenerator::TrafficGenerator()
 {
-  // set private variables
-  m_x                = x;
-  m_y                = y;
-  m_trafficGenerator = gen;
-}
-
-/*************************************** tick ****************************************/
-
-void Junction::tick()
-{
-  // simulate 1 time unit step
-  qDebug("DEBUG Junction::tick");
-
 }

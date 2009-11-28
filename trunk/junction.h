@@ -21,6 +21,8 @@
 #ifndef JUNCTION_H
 #define JUNCTION_H
 
+class TrafficGenerator;
+
 /*************************************************************************************/
 /**************************** Junction at each end of road ***************************/
 /*************************************************************************************/
@@ -28,7 +30,14 @@
 class Junction
 {
 public:
-  Junction();                                   // constructor
+  Junction( float, float, TrafficGenerator* );                 // constructor
+
+  void  tick();                               // simulate 1 time unit step
+
+private:
+  float               m_x;                    // junction location x coordinate
+  float               m_y;                    // junction location y coordinate
+  TrafficGenerator*   m_trafficGenerator;     // traffic generator
 };
 
 #endif // JUNCTION_H

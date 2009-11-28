@@ -8,9 +8,11 @@ SOURCES += main.cpp \
     simulation.cpp \
     junction.cpp \
     road.cpp \
-    vehicle.cpp
+    vehicle.cpp \
+    trafficgenerator.cpp
 HEADERS += mainwindow.h \
     simulation.h \
     junction.h \
     road.h \
-    vehicle.h
+    vehicle.h \
+    trafficgenerator.h

@@ -20,12 +20,26 @@
 
 #include "road.h"
 
+#include <QDebug>
+
 /*************************************************************************************/
 /************************ Road along which vehicles can travel ***********************/
 /*************************************************************************************/
 
 /************************************ constuctor *************************************/
 
-Road::Road()
+Road::Road( Junction* start, Junction* end )
 {
+  // set private variables
+  m_startJunction = start;
+  m_endJunction   = end;
+}
+
+/*************************************** tick ****************************************/
+
+void Road::tick()
+{
+  // simulate 1 time unit step
+  qDebug("DEBUG Road::tick");
+
 }
