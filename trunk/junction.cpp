@@ -20,8 +20,7 @@
 
 #include "junction.h"
 #include "trafficgenerator.h"
-//#include "vehicle.h"
-//#include "road.h"
+#include "road.h"
 
 #include <QDebug>
 
@@ -53,19 +52,29 @@ void Junction::associate( Road* road, int weight )
 void Junction::tick( int time )
 {
   // simulate 1 time unit step
-  qDebug("DEBUG Junction::tick");
+  //qDebug("DEBUG Junction::tick");
 
+  // if no roads associated then no point in generating traffic
   if ( m_roadList.empty() ) return;
+
+  // run traffic generator, if no vehicle then return immediately
   Vehicle*  vehicle = m_trafficGenerator->generate( time );
   if ( vehicle == 0 ) return;
 
-  // TODO need to decide on which road to place vehicle!
+  // if only one road associated, then add vehicle to that road
   if ( m_roadList.count() == 1 )
   {
-
-
+    m_roadList[0]->add( vehicle );
+    return;
   }
 
+  // multiple road starts associated with junction
+  int  sum;
+  foreach( int weight, m_weightList )
+    sum += weight;
+  int rand = qrand() % sum;
+
+  qDebug("WARNIG Junction::tick -------------------- TODO");
 
 
 }

@@ -36,6 +36,7 @@ public:
   Road( Junction*, int, Junction* );        // constructor
 
   void  tick();                             // simulate 1 time unit step
+  void  add( Vehicle* );                    // add vehicle to the road
 
 private:
   Junction*         m_startJunction;        // road start junction
