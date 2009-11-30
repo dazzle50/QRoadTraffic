@@ -41,6 +41,6 @@ Vehicle*  TrafficGenerator::generate( int time )
   Vehicle*  vehicle = 0;
   if ( time%100 == 9 ) vehicle = new Vehicle();
 
-  qDebug("DEBUG TrafficGenerator::generate %i => %p", time, vehicle);
+  //qDebug("DEBUG TrafficGenerator::generate %i => %p", time, vehicle);
   return vehicle;
 }

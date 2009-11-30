@@ -45,8 +45,18 @@ Road::Road( Junction* start, int weight, Junction* end )
 void Road::tick()
 {
   // simulate 1 time unit step
-  qDebug("DEBUG Road::tick");
+  //qDebug("DEBUG Road::tick");
 
   foreach( Vehicle* vehicle, m_vehicleList )
     vehicle->tick();
+}
+
+/*************************************** add *****************************************/
+
+void Road::add( Vehicle* vehicle )
+{
+  // // add vehicle to the road
+  qDebug("DEBUG Road::add");
+
+  m_vehicleList.append( vehicle );
 }
