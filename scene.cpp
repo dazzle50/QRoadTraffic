@@ -18,36 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef JUNCTION_H
-#define JUNCTION_H
-
-class TrafficGenerator;
-class Road;
-
-#include<QList>
-#include<QVector2D>
+#include "scene.h"
 
 /*************************************************************************************/
-/**************************** Junction at each end of road ***************************/
+/******************** Scene representing the simulated landscape *********************/
 /*************************************************************************************/
 
-class Junction
+/************************************ constuctor *************************************/
+
+Scene::Scene() : QGraphicsScene()
 {
-public:
-  Junction( float, float, TrafficGenerator* );                 // constructor
-
-  void  tick( int );                          // simulate 1 time unit step
-  void  associate( Road*, int );              // associate road with start junction
-
-  QVector2D  pos()
-    { return QVector2D( m_x, m_y ); }         // return position of junction
-
-private:
-  float               m_x;                    // junction location x coordinate
-  float               m_y;                    // junction location y coordinate
-  TrafficGenerator*   m_trafficGenerator;     // traffic generator
-  QList<Road*>        m_roadList;             // list of roads attached to junction
-  int                 m_weightSum;            // sum of road weights attached to junction
-};
-
-#endif // JUNCTION_H
+}

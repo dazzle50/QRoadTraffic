@@ -36,6 +36,7 @@ Junction::Junction( float x, float y, TrafficGenerator* gen )
   m_x                = x;
   m_y                = y;
   m_trafficGenerator = gen;
+  m_weightSum        = 0;
 }
 
 /************************************ associate **************************************/
@@ -44,7 +45,7 @@ void Junction::associate( Road* road, int weight )
 {
   // register road & traffic weight with start junction
   m_roadList.append( road );
-  m_weightList.append( weight );
+  m_weightSum += weight;
 }
 
 /*************************************** tick ****************************************/
@@ -69,12 +70,16 @@ void Junction::tick( int time )
   }
 
   // multiple road starts associated with junction
-  int  sum;
-  foreach( int weight, m_weightList )
-    sum += weight;
-  int rand = qrand() % sum;
+  int rand = qrand() % m_weightSum;
+  foreach( Road* road, m_roadList )
+  {
+    if ( rand < road->weight() )
+    {
+      road->add( vehicle );
+      return;
+    }
+    rand -= road->weight();
+  }
 
-  qDebug("WARNIG Junction::tick -------------------- TODO");
-
-
+  qDebug("WARNING Junction::tick - vehicle not allocated to a road!");
 }

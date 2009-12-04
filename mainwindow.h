@@ -23,6 +23,8 @@
 
 #include <QMainWindow>
 
+class Scene;
+
 /*************************************************************************************/
 /********************* Main application window for QRoadTraffic **********************/
 /*************************************************************************************/
@@ -31,6 +33,9 @@ class MainWindow : public QMainWindow
 {
 public:
   MainWindow();                       // constructor
+
+private:
+  Scene*       m_scene;               // scene representing the simulated landscape
 };
 
 #endif  // MAINWINDOW_H
