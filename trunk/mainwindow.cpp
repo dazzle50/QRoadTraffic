@@ -20,6 +20,7 @@
 
 #include "mainwindow.h"
 #include "scene.h"
+#include "simulation.h"
 
 #include <QMenuBar>
 #include <QStatusBar>
@@ -49,6 +50,29 @@ MainWindow::MainWindow() : QMainWindow()
   view->setFrameStyle( 0 );
   setCentralWidget( view );
 
+  addSimulatedItems();
+
   // add status bar message
   statusBar()->showMessage("QRoadTraffic has started");
+}
+
+/********************************* addSimulatedItems *********************************/
+
+void MainWindow::addSimulatedItems()
+{
+  // add simulated items to the scene
+
+  // add junctions
+  foreach( QPointF pos, sim->junctionPoints() )
+    qDebug("JUNCTION xxxxxx");
+
+  // add roads
+  foreach( QPointF pos, sim->roadPoints() )
+    qDebug("ROAD xxxxxx");
+
+  // add vehicles
+  foreach( QPointF pos, sim->vehiclePoints() )
+    qDebug("VEHICLE xxxxxx");
+
+
 }

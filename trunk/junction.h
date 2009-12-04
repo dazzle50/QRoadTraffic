@@ -25,7 +25,7 @@ class TrafficGenerator;
 class Road;
 
 #include<QList>
-#include<QVector2D>
+#include<QPointF>
 
 /*************************************************************************************/
 /**************************** Junction at each end of road ***************************/
@@ -39,8 +39,8 @@ public:
   void  tick( int );                          // simulate 1 time unit step
   void  associate( Road*, int );              // associate road with start junction
 
-  QVector2D  pos()
-    { return QVector2D( m_x, m_y ); }         // return position of junction
+  QPointF  pos()
+    { return QPointF( m_x, m_y ); }           // return position of junction
 
 private:
   float               m_x;                    // junction location x coordinate
