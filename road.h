@@ -25,7 +25,6 @@ class Junction;
 class Vehicle;
 
 #include <QList>
-#include <QPair>
 
 /*************************************************************************************/
 /************************ Road along which vehicles can travel ***********************/

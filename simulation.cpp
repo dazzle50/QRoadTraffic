@@ -126,3 +126,33 @@ void Simulation::tick()
 
   m_time++;
 }
+
+/********************************** junctionPoints ***********************************/
+
+QList<QPointF> Simulation::junctionPoints()
+{
+  // return list of junction locations
+  QList<QPointF>  pos;
+  foreach( Junction* junction, m_junctionList )
+    pos.append( junction->pos() );
+  return pos;
+}
+
+/************************************ roadPoints *************************************/
+
+QList<QPointF> Simulation::roadPoints()
+{
+  // return list of road starts & end points
+  QList<QPointF>  pos;
+  return pos;
+}
+
+/********************************** vehiclePoints ************************************/
+
+QList<QPointF> Simulation::vehiclePoints()
+{
+  // return list of vehicle locations
+  QList<QPointF>  pos;
+  return pos;
+}
+

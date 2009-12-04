@@ -23,6 +23,7 @@
 #include "junction.h"
 
 #include <QDebug>
+#include <QVector2D>
 
 /*************************************************************************************/
 /************************ Road along which vehicles can travel ***********************/
@@ -38,7 +39,7 @@ Road::Road( Junction* start, int weight, Junction* end )
   m_trafficWeight = weight;
   m_startSpeed    = 30.0;
   m_endSpeed      = 40.0;
-  m_roadLength    = (start->pos() - end->pos()).length();
+  m_roadLength    = QVector2D(start->pos() - end->pos()).length();
 
   // register road with start junction with weight
   start->associate( this, weight );

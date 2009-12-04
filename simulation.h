@@ -25,6 +25,7 @@ class Road;
 class Junction;
 
 #include <QList>
+#include <QPointF>
 
 /*************************************************************************************/
 /*********************** Holds the simulation for QRoadTraffic ***********************/
@@ -34,6 +35,10 @@ class Simulation
 {
 public:
   Simulation();                                   // constructor
+
+  QList<QPointF>  junctionPoints();               // return list of junction locations
+  QList<QPointF>  roadPoints();                   // return list of road starts & end points
+  QList<QPointF>  vehiclePoints();                // return list of vehicle locations
 
   void  tick();                                   // simulate 1 time unit step
   float rand();                                   // return random number 0->1
