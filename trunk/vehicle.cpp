@@ -40,13 +40,3 @@ Vehicle::Vehicle()
   //qDebug("DEBUG Vehicle constructor len=%f gapD=%f gapT=%f speed=%f",
   //       m_length, m_gapDistance, m_gapTime, m_speedFactor);
 }
-
-/*************************************** tick ****************************************/
-
-void Vehicle::tick()
-{
-  // simulate 1 time unit step
-  qDebug("DEBUG Vehicle::tick");
-
-  qDebug("WARNIG Vehicle::tick -------------------- TODO");
-}

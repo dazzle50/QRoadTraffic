@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "mainwindow.h"
+#include "scene.h"
 
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QGraphicsView>
 
 /*************************************************************************************/
 /********************* Main application window for QRoadTraffic **********************/
@@ -39,6 +41,13 @@ MainWindow::MainWindow() : QMainWindow()
   QMenu* helpMenu = menuBar()->addMenu("&Help");
 
   helpMenu->addAction("Build with Qt"QT_VERSION_STR);
+
+  // create scene and central widget view of scene
+  m_scene               = new Scene();
+  QGraphicsView*   view = new QGraphicsView( m_scene );
+  view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
+  view->setFrameStyle( 0 );
+  setCentralWidget( view );
 
   // add status bar message
   statusBar()->showMessage("QRoadTraffic has started");

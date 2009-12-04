@@ -35,6 +35,10 @@ Road::Road( Junction* start, int weight, Junction* end )
   // set private variables
   m_startJunction = start;
   m_endJunction   = end;
+  m_trafficWeight = weight;
+  m_startSpeed    = 30.0;
+  m_endSpeed      = 40.0;
+  m_roadLength    = (start->pos() - end->pos()).length();
 
   // register road with start junction with weight
   start->associate( this, weight );
@@ -47,16 +51,35 @@ void Road::tick()
   // simulate 1 time unit step
   //qDebug("DEBUG Road::tick");
 
-  foreach( Vehicle* vehicle, m_vehicleList )
-    vehicle->tick();
+  for( int v=0 ; v<m_vehicleList.size() ; v++ )
+  {
+    Vehicle*  vehicle = m_vehicleList.at(v);
+    float     pos     = m_vehiclePosList.at(v);
+    qDebug("DEBUG Road::tick - road %p vehicle %p @ %f", this, vehicle, pos);
+
+    float     speed   = roadSpeed( pos ) * vehicle->speedFactor();
+    m_vehiclePosList[v] += speed / m_roadLength;
+    qDebug("DEBUG Road::tick - roadS %f vehSF %f len %f => %f",
+           roadSpeed( pos ), vehicle->speedFactor(), m_roadLength, m_vehiclePosList[v]);
+  }
 }
 
 /*************************************** add *****************************************/
 
 void Road::add( Vehicle* vehicle )
 {
-  // // add vehicle to the road
+  // add vehicle to the road
   qDebug("DEBUG Road::add");
 
   m_vehicleList.append( vehicle );
+  m_vehiclePosList.append( float(0.0) );
+}
+
+/************************************ roadSpeed **************************************/
+
+float Road::roadSpeed( float pos )
+{
+  // return speed of road at position 'pos'
+
+  return m_startSpeed + pos*( m_endSpeed - m_startSpeed );
 }

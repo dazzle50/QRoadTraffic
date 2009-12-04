@@ -60,7 +60,7 @@ Simulation::Simulation()
   m_roadList.append( r23 );
   m_roadList.append( r31 );
 
-  for( int count=0 ; count<100 ; count++ )
+  for( int count=0 ; count<15 ; count++ )
     tick();
 }
 

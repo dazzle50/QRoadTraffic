@@ -28,9 +28,12 @@
 class Vehicle
 {
 public:
-  Vehicle();                                 // constructor
+  Vehicle();                                     // constructor
 
-  void  tick();                              // simulate 1 time unit step
+  float length() { return m_length; }            // return vehicle length
+  float gapDistance() { return m_gapDistance; }  // return vehicle gap distance
+  float gapTime() { return m_gapTime; }          // return vehicle gap time
+  float speedFactor() { return m_speedFactor; }  // return vehicle speed factor
 
 private:
   float  m_length;                  // length of vehicle
