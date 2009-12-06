@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
   // create application main window & enter main event loop
   sim = new Simulation();
   MainWindow window;
+  window.resize( 600, 400 );
   window.show();
   return app.exec();
 }

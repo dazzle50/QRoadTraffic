@@ -43,9 +43,9 @@ Simulation::Simulation()
   // create 3 junctions
   //                j2
   //       j1                j3
-  Junction*  j1 = new Junction( 200, 400, gen );
-  Junction*  j2 = new Junction( 400, 200, gen );
-  Junction*  j3 = new Junction( 600, 400, gen );
+  Junction*  j1 = new Junction(  50, 250, gen );
+  Junction*  j2 = new Junction( 300,  50, gen );
+  Junction*  j3 = new Junction( 500, 300, gen );
   m_junctionList.append( j1 );
   m_junctionList.append( j2 );
   m_junctionList.append( j3 );
@@ -144,6 +144,11 @@ QList<QPointF> Simulation::roadPoints()
 {
   // return list of road starts & end points
   QList<QPointF>  pos;
+  foreach( Road* road, m_roadList )
+  {
+    pos.append( road->start()->pos() );
+    pos.append( road->end()->pos() );
+  }
   return pos;
 }
 

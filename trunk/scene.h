@@ -30,7 +30,9 @@
 class Scene : public QGraphicsScene
 {
 public:
-  Scene();                                      // constructor
+  Scene();                            // constructor
+
+  void  addSimulatedItems();          // create QGraphicsItems for simulated items
 };
 
 #endif  // SCENE_H

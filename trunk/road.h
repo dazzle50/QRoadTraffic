@@ -33,12 +33,14 @@ class Vehicle;
 class Road
 {
 public:
-  Road( Junction*, int, Junction* );            // constructor
+  Road( Junction*, int, Junction* );               // constructor
 
-  void    tick();                               // simulate 1 time unit step
-  void    add( Vehicle* );                      // add vehicle to the road
-  float   roadSpeed( float );                   // return road speed at position
-  int     weight() { return m_trafficWeight; }  // return road traffic weight
+  void       tick();                               // simulate 1 time unit step
+  void       add( Vehicle* );                      // add vehicle to the road
+  float      roadSpeed( float );                   // return road speed at position
+  int        weight() { return m_trafficWeight; }  // return road traffic weight
+  Junction*  start() { return m_startJunction; }   // return road start junction
+  Junction*  end() { return m_endJunction; }       // return road end junction
 
 private:
   Junction*           m_startJunction;          // road start junction
