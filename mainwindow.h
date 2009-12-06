@@ -34,8 +34,6 @@ class MainWindow : public QMainWindow
 public:
   MainWindow();                       // constructor
 
-  void  addSimulatedItems();          // create QGraphicsItems for simulated items
-
 private:
   Scene*       m_scene;               // scene representing the simulated landscape
 };
