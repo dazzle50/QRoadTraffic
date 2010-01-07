@@ -4,17 +4,17 @@
 TARGET = QRoadTraffic
 TEMPLATE = app
 SOURCES += main.cpp \
-    mainwindow.cpp \
-    simulation.cpp \
-    junction.cpp \
-    road.cpp \
-    vehicle.cpp \
-    trafficgenerator.cpp \
-    scene.cpp
-HEADERS += mainwindow.h \
-    simulation.h \
-    junction.h \
-    road.h \
-    vehicle.h \
-    trafficgenerator.h \
-    scene.h
+    sim/junction.cpp \
+    gui/mainwindow.cpp \
+    sim/road.cpp \
+    gui/scene.cpp \
+    sim/simulation.cpp \
+    sim/trafficgenerator.cpp \
+    sim/vehicle.cpp
+HEADERS += sim/junction.h \
+    gui/mainwindow.h \
+    sim/road.h \
+    gui/scene.h \
+    sim/simulation.h \
+    sim/trafficgenerator.h \
+    sim/vehicle.h

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "scene.h"
-#include "simulation.h"
+#include "../sim/simulation.h"
 
 #include <QGraphicsEllipseItem>
 

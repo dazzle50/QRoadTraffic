@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "mainwindow.h"
-#include "simulation.h"
+#include "gui/mainwindow.h"
+#include "sim/simulation.h"
 
 #include <QApplication>
 
