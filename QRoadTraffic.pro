@@ -10,11 +10,17 @@ SOURCES += main.cpp \
     gui/scene.cpp \
     sim/simulation.cpp \
     sim/trafficgenerator.cpp \
-    sim/vehicle.cpp
+    sim/vehicle.cpp \
+    gui/scenejunction.cpp \
+    gui/sceneroad.cpp \
+    gui/scenevehicle.cpp
 HEADERS += sim/junction.h \
     gui/mainwindow.h \
     sim/road.h \
     gui/scene.h \
     sim/simulation.h \
     sim/trafficgenerator.h \
-    sim/vehicle.h
+    sim/vehicle.h \
+    gui/scenejunction.h \
+    gui/sceneroad.h \
+    gui/scenevehicle.h

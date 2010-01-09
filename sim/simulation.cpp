@@ -66,7 +66,7 @@ Simulation::Simulation()
 
 /************************************ distribute *************************************/
 
-float Simulation::distribute(float in, float shape)
+float Simulation::distribute( float in, float shape )
 {
   // returns float between 0 and 1 by distributing 'in' parameter to curve defined by 'shape' parameter
   // =IF(A<0.5;(2*bb*bb+bb)*((1/2/bb)-1/(2*A+2*bb));1-(2*bb*bb+bb)*((1/2/bb)-1/(2*(1-A)+2*bb)))
@@ -84,7 +84,7 @@ float Simulation::distribute(float in, float shape)
   }
 
   float out;
-  if (in < 0.5)
+  if ( in < 0.5 )
     out = (2.0*shape*shape+shape)*((0.5/shape)-0.5/(in+shape));
   else
     out = 1.0-(2.0*shape*shape+shape)*((0.5/shape)-0.5/(1.0-in+shape));
@@ -95,7 +95,7 @@ float Simulation::distribute(float in, float shape)
 
 /************************************ distribute *************************************/
 
-float Simulation::distribute(float in, float shape, float min, float max)
+float Simulation::distribute( float in, float shape, float min, float max )
 {
   // returns float between 'min' and 'max' by distributing 'in' parameter to curve defined by 'shape' parameter
   float out = distribute( in, shape );
@@ -127,37 +127,28 @@ void Simulation::tick()
   m_time++;
 }
 
-/********************************** junctionPoints ***********************************/
+/************************************* junctions *************************************/
 
-QList<QPointF> Simulation::junctionPoints()
+QList<Junction*> Simulation::junctions()
 {
-  // return list of junction locations
-  QList<QPointF>  pos;
-  foreach( Junction* junction, m_junctionList )
-    pos.append( junction->pos() );
-  return pos;
+  // return list of simulated junctions
+  return m_junctionList;
 }
 
-/************************************ roadPoints *************************************/
+/*************************************** roads ***************************************/
 
-QList<QPointF> Simulation::roadPoints()
+QList<Road*> Simulation::roads()
 {
-  // return list of road starts & end points
-  QList<QPointF>  pos;
-  foreach( Road* road, m_roadList )
-  {
-    pos.append( road->start()->pos() );
-    pos.append( road->end()->pos() );
-  }
-  return pos;
+  // return list of simulated roads
+  return m_roadList;
 }
 
-/********************************** vehiclePoints ************************************/
+/************************************* vehicles **************************************/
 
-QList<QPointF> Simulation::vehiclePoints()
+QList<Vehicle*> Simulation::vehicles()
 {
-  // return list of vehicle locations
-  QList<QPointF>  pos;
-  return pos;
+  // return list of simulated vehicles TODO !!!!!!!!!!!
+  QList<Vehicle*>  list;
+  return list;
 }
 

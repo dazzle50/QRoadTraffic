@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 by Richard Crook                                   *
+ *   Copyright (C) 2010 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,39 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SIMULATION_H
-#define SIMULATION_H
-
-class Road;
-class Junction;
-class Vehicle;
-
-#include <QList>
+#include "scenevehicle.h"
 
 /*************************************************************************************/
-/*********************** Holds the simulation for QRoadTraffic ***********************/
+/******************** Represents a simulated vehicle on GUI scene ********************/
 /*************************************************************************************/
 
-class Simulation
+/************************************ constuctor *************************************/
+
+SceneVehicle::SceneVehicle()
 {
-public:
-  Simulation();                                   // constructor
-
-  QList<Junction*>  junctions();                  // return list of simulated junctions
-  QList<Road*>      roads();                      // return list of simulated roads
-  QList<Vehicle*>   vehicles();                   // return list of simulated vehicles
-
-  void  tick();                                   // simulate 1 time unit step
-  float rand();                                   // return random number 0->1
-  float distribute(float, float);                 // distribute 0->1 to new curve 0->1
-  float distribute(float, float, float, float);   // distribute 0->1 to new curve min->max
-
-private:
-  int                  m_time;            // simulated time
-  QList<Road*>         m_roadList;        // list of one-way roads
-  QList<Junction*>     m_junctionList;    // list of road junctions
-};
-
-extern Simulation* sim;
-
-#endif // SIMULATION_H
+  // TODO .................
+}
