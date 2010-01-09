@@ -44,30 +44,21 @@ void Scene::addSimulatedItems()
   // add simulated items to the scene
 
   // add junctions
-  float radius = 5.0;
-  foreach( QPointF pos, sim->junctionPoints() )
-    addEllipse( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius,
-                QPen(Qt::black), QBrush(Qt::red) )->setZValue( 100 );
+  foreach( Junction* junction, sim->junctions() )
+    qDebug("DEBUG Scene::addSimulatedItems - JUNCTION xxxxxx");
+    //addEllipse( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius,
+    //            QPen(Qt::black), QBrush(Qt::red) )->setZValue( 100 );
 
   // add roads
-  QPointF start;
-  foreach( QPointF pos, sim->roadPoints() )
-  {
-    if ( start.isNull() )
-      start = pos;
-    else
-    {
-      QLineF  lane   = QLineF( start,pos ).normalVector().unitVector();
-      QPointF offset = QPointF( lane.dx(), lane.dy() );
-      addLine( QLineF(start+offset,pos+offset), QPen() );
-      start.rx() = 0.0;
-      start.ry() = 0.0;
-    }
-  }
+  foreach( Road* road, sim->roads() )
+    qDebug("DEBUG Scene::addSimulatedItems - ROAD xxxxxx");
+    //QLineF  lane   = QLineF( start,pos ).normalVector().unitVector();
+    //QPointF offset = QPointF( lane.dx(), lane.dy() );
+    //addLine( QLineF(start+offset,pos+offset), QPen() );
 
   // add vehicles
-  foreach( QPointF pos, sim->vehiclePoints() )
-    qDebug("VEHICLE xxxxxx");
+  foreach( Vehicle* vehcile, sim->vehicles() )
+    qDebug("DEBUG Scene::addSimulatedItems - VEHICLE xxxxxx");
 
 
 }
