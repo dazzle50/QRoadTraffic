@@ -21,6 +21,9 @@
 #ifndef SCENEVEHICLE_H
 #define SCENEVEHICLE_H
 
+class Scene;
+class Vehicle;
+
 /*************************************************************************************/
 /******************** Represents a simulated vehicle on GUI scene ********************/
 /*************************************************************************************/
@@ -28,7 +31,7 @@
 class SceneVehicle
 {
 public:
-  SceneVehicle();                            // constructor
+  SceneVehicle( Scene*, Vehicle* );                           // constructor
 };
 
 #endif // SCENEVEHICLE_H

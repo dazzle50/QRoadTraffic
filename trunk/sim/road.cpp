@@ -31,7 +31,7 @@
 
 /************************************ constuctor *************************************/
 
-Road::Road( Junction* start, int weight, Junction* end )
+Road::Road( Junction* start, Junction* end, int weight )
 {
   // set private variables
   m_startJunction = start;

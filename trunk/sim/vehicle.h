@@ -28,14 +28,17 @@
 class Vehicle
 {
 public:
-  Vehicle();                                     // constructor
+  Vehicle();                                           // constructor
 
-  float length() { return m_length; }            // return vehicle length
-  float gapDistance() { return m_gapDistance; }  // return vehicle gap distance
-  float gapTime() { return m_gapTime; }          // return vehicle gap time
-  float speedFactor() { return m_speedFactor; }  // return vehicle speed factor
+  int   id() const { return m_id; }                    // return vehicle id
+  float length() const { return m_length; }            // return vehicle length
+  float gapDistance() const { return m_gapDistance; }  // return vehicle gap distance
+  float gapTime() const { return m_gapTime; }          // return vehicle gap time
+  float speedFactor() const { return m_speedFactor; }  // return vehicle speed factor
 
 private:
+  static int m_idCount;             // unique vehicle count
+  int    m_id;                      // unqiue vehicle number
   float  m_length;                  // length of vehicle
   float  m_gapDistance;             // minimum gap in queueing traffic
   float  m_gapTime;                 // minimum gap in time units in moving traffic

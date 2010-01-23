@@ -21,6 +21,9 @@
 #ifndef SCENEJUNCTION_H
 #define SCENEJUNCTION_H
 
+class Scene;
+class Junction;
+
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
 /*************************************************************************************/
@@ -28,7 +31,7 @@
 class SceneJunction
 {
 public:
-  SceneJunction();                            // constructor
+  SceneJunction( Scene*, Junction* );                         // constructor
 };
 
 #endif // SCENEJUNCTION_H

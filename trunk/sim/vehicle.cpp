@@ -27,6 +27,8 @@
 /************************* Vehicle that travels along a road *************************/
 /*************************************************************************************/
 
+int Vehicle::m_idCount = 0;
+
 /************************************ constuctor *************************************/
 
 Vehicle::Vehicle()
@@ -37,6 +39,6 @@ Vehicle::Vehicle()
   m_gapDistance = sim->distribute( rand, 0.1, 0.5, 2.0 );
   m_gapTime     = sim->distribute( 1-rand, 0.1, 1.0, 3.0 );
   m_speedFactor = sim->distribute( 1-rand, 0.1, 0.5, 1.5 );
-  //qDebug("DEBUG Vehicle constructor len=%f gapD=%f gapT=%f speed=%f",
-  //       m_length, m_gapDistance, m_gapTime, m_speedFactor);
+  m_id          = m_idCount++;
+  qDebug("DEBUG Vehicle constructor - id=%i, speedFactor=%f",m_id,m_speedFactor);
 }

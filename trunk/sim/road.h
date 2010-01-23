@@ -33,7 +33,7 @@ class Vehicle;
 class Road
 {
 public:
-  Road( Junction*, int, Junction* );               // constructor
+  Road( Junction*, Junction*, int );               // constructor
 
   void       tick();                               // simulate 1 time unit step
   void       add( Vehicle* );                      // add vehicle to the road

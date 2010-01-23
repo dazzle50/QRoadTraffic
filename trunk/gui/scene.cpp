@@ -19,9 +19,10 @@
  ***************************************************************************/
 
 #include "scene.h"
+#include "scenejunction.h"
+#include "sceneroad.h"
+#include "scenevehicle.h"
 #include "../sim/simulation.h"
-
-#include <QGraphicsEllipseItem>
 
 /*************************************************************************************/
 /******************** Scene representing the simulated landscape *********************/
@@ -45,20 +46,13 @@ void Scene::addSimulatedItems()
 
   // add junctions
   foreach( Junction* junction, sim->junctions() )
-    qDebug("DEBUG Scene::addSimulatedItems - JUNCTION xxxxxx");
-    //addEllipse( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius,
-    //            QPen(Qt::black), QBrush(Qt::red) )->setZValue( 100 );
+    new SceneJunction( this, junction );
 
   // add roads
   foreach( Road* road, sim->roads() )
-    qDebug("DEBUG Scene::addSimulatedItems - ROAD xxxxxx");
-    //QLineF  lane   = QLineF( start,pos ).normalVector().unitVector();
-    //QPointF offset = QPointF( lane.dx(), lane.dy() );
-    //addLine( QLineF(start+offset,pos+offset), QPen() );
+    new SceneRoad( this, road );
 
   // add vehicles
-  foreach( Vehicle* vehcile, sim->vehicles() )
-    qDebug("DEBUG Scene::addSimulatedItems - VEHICLE xxxxxx");
-
-
+  foreach( Vehicle* vehicle, sim->vehicles() )
+    new SceneVehicle( this, vehicle );
 }
