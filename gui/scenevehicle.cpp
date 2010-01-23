@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "scenevehicle.h"
+#include "scene.h"
+#include "../sim/vehicle.h"
 
 /*************************************************************************************/
 /******************** Represents a simulated vehicle on GUI scene ********************/
@@ -26,7 +28,9 @@
 
 /************************************ constuctor *************************************/
 
-SceneVehicle::SceneVehicle()
+SceneVehicle::SceneVehicle( Scene* scene, Vehicle* vehicle )
 {
   // TODO .................
+  qDebug("DEBUG Scene::addSimulatedItems - VEHICLE xxxxxx");
+
 }

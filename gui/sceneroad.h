@@ -21,6 +21,9 @@
 #ifndef SCENEROAD_H
 #define SCENEROAD_H
 
+class Scene;
+class Road;
+
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
 /*************************************************************************************/
@@ -28,7 +31,7 @@
 class SceneRoad
 {
 public:
-  SceneRoad();                            // constructor
+  SceneRoad( Scene*, Road* );                            // constructor
 };
 
 #endif // SCENEROAD_H
