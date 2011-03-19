@@ -18,11 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QGraphicsSceneContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+
 #include "scene.h"
 #include "scenejunction.h"
 #include "sceneroad.h"
 #include "scenevehicle.h"
 #include "../sim/simulation.h"
+#include "../sim/junction.h"
+#include "../sim/trafficgenerator.h"
 
 /*************************************************************************************/
 /******************** Scene representing the simulated landscape *********************/
@@ -38,6 +44,26 @@ Scene::Scene() : QGraphicsScene()
   addSimulatedItems();
 }
 
+/********************************* contextMenuEvent **********************************/
+
+void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
+{
+  // we only want to display a menu if user clicked a station
+  qreal      x        = event->scenePos().x();
+  qreal      y        = event->scenePos().y();
+  // SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
+
+  // display context menu and action accordingly
+  QMenu     menu;
+  QAction*  addJunctionAction = menu.addAction("Add Junction");
+  if ( menu.exec( event->screenPos() ) == addJunctionAction )
+  {
+    Junction* j = new Junction( x, y, new TrafficGenerator() );
+    addItem( new SceneJunction( j ) );
+    qDebug( qPrintable( QString("Junction added at %1,%2").arg(x).arg(y) ) );
+  }
+}
+
 /********************************* addSimulatedItems *********************************/
 
 void Scene::addSimulatedItems()
@@ -46,7 +72,7 @@ void Scene::addSimulatedItems()
 
   // add junctions
   foreach( Junction* junction, sim->junctions() )
-    new SceneJunction( this, junction );
+    new SceneJunction( junction );
 
   // add roads
   foreach( Road* road, sim->roads() )

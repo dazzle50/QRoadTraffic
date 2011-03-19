@@ -21,17 +21,18 @@
 #ifndef SCENEJUNCTION_H
 #define SCENEJUNCTION_H
 
-class Scene;
 class Junction;
+
+#include <QGraphicsEllipseItem>
 
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
 /*************************************************************************************/
 
-class SceneJunction
+class SceneJunction : public QGraphicsEllipseItem
 {
 public:
-  SceneJunction( Scene*, Junction* );                         // constructor
+  SceneJunction( Junction* );                         // constructor
 };
 
 #endif // SCENEJUNCTION_H
