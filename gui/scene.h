@@ -33,6 +33,8 @@ public:
   Scene();                            // constructor
 
   void  addSimulatedItems();          // create QGraphicsItems for simulated items
+
+  void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
 };
 
 #endif  // SCENE_H

@@ -19,10 +19,9 @@
  ***************************************************************************/
 
 #include "scenejunction.h"
-#include "scene.h"
 #include "../sim/junction.h"
 
-#include <QGraphicsEllipseItem>
+#include <QPen>
 
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
@@ -30,11 +29,14 @@
 
 /************************************ constuctor *************************************/
 
-SceneJunction::SceneJunction( Scene* scene, Junction* junction )
+SceneJunction::SceneJunction( Junction* junction )
 {
-  // TODO ...........
-  float   radius = 5.0;
+  // Junction scene item is a red circle with a black border
+  float   radius = 6.0;
   QPointF pos = junction->pos();
-  scene->addEllipse( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius,
-                     QPen(Qt::black), QBrush(Qt::red) )->setZValue( 100 );
+
+  setRect( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius );
+  setPen( QPen(Qt::black) );
+  setBrush( Qt::red );
+  setZValue( 100 );
 }

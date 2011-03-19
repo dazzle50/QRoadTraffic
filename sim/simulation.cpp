@@ -36,7 +36,7 @@ Simulation::Simulation()
   // initialise private variables
   m_time = 0;
 
-  // DUMMY test code ###########################################
+  /* DUMMY test code ###########################################
   // create traffic generator
   TrafficGenerator*  gen = new TrafficGenerator();
 
@@ -62,6 +62,7 @@ Simulation::Simulation()
 
   for( int count=0 ; count<15 ; count++ )
     tick();
+  ################################################# */
 }
 
 /************************************ distribute *************************************/
