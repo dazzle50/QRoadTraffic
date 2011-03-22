@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "sceneroad.h"
-#include "scene.h"
-#include "../sim/road.h"
-#include "../sim/junction.h"
+#include "scenejunction.h"
+
+#include <QPen>
+//#include <QPointF>
+#include <QLineF>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
@@ -29,12 +31,23 @@
 
 /************************************ constuctor *************************************/
 
-SceneRoad::SceneRoad( Scene* scene, Road* road )
+SceneRoad::SceneRoad( SceneJunction* sj )
 {
-  // TODO ...........
-  QPointF start  = road->start()->pos();
-  QPointF end    = road->end()->pos();
-  QLineF  lane   = QLineF( start,end ).normalVector().unitVector();
-  QPointF offset = QPointF( lane.dx(), lane.dy() );
-  scene->addLine( QLineF(start+offset,end+offset), QPen() );
+  // Create a new road starting from junction
+  qreal  x = sj->x();
+  qreal  y = sj->y();
+
+  setLine( x, y, x+1, y+1 );
+  setPen( QPen( Qt::black, 3 ) );
+  setZValue( 50 );
+}
+
+/*********************************** updateNewRoad ***********************************/
+
+void SceneRoad::updateNewRoad( QPointF pos )
+{
+  // Update the end of new road
+  QLineF  road( line() );
+  road.setP2( pos );
+  setLine( road );
 }

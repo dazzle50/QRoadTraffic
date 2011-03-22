@@ -33,10 +33,13 @@ SceneJunction::SceneJunction( Junction* junction )
 {
   // Junction scene item is a red circle with a black border
   float   radius = 6.0;
-  QPointF pos = junction->pos();
 
-  setRect( pos.x()-radius, pos.y()-radius, 2*radius, 2*radius );
+  setRect( -radius, -radius, 2*radius, 2*radius );
+  setPos( junction->pos() );
   setPen( QPen(Qt::black) );
   setBrush( Qt::red );
   setZValue( 100 );
+  setFlags( QGraphicsItem::ItemIsMovable |
+            QGraphicsItem::ItemIsSelectable |
+            QGraphicsItem::ItemIgnoresTransformations );
 }

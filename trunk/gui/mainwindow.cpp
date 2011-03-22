@@ -48,6 +48,7 @@ MainWindow::MainWindow() : QMainWindow()
   view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
   view->setFrameStyle( 0 );
   view->setRenderHint( QPainter::Antialiasing );
+  view->setMouseTracking( TRUE );
   setCentralWidget( view );
 
   // add status bar message
