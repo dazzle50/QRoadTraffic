@@ -21,17 +21,20 @@
 #ifndef SCENEROAD_H
 #define SCENEROAD_H
 
-class Scene;
-class Road;
+class SceneJunction;
+
+#include <QGraphicsLineItem>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
 /*************************************************************************************/
 
-class SceneRoad
+class SceneRoad : public QGraphicsLineItem
 {
 public:
-  SceneRoad( Scene*, Road* );                            // constructor
+  SceneRoad( SceneJunction* );                           // constructor
+
+  void  updateNewRoad( QPointF );                        // Update end of new road
 };
 
 #endif // SCENEROAD_H

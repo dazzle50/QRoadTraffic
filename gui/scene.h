@@ -21,6 +21,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+class SceneRoad;
+
 #include <QGraphicsScene>
 
 /*************************************************************************************/
@@ -29,12 +31,16 @@
 
 class Scene : public QGraphicsScene
 {
+private:
+  SceneRoad*  newRoad;                // null, unless adding a new road
+
 public:
   Scene();                            // constructor
 
   void  addSimulatedItems();          // create QGraphicsItems for simulated items
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
+  void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
 };
 
 #endif  // SCENE_H
