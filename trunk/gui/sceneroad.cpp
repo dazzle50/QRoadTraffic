@@ -22,7 +22,6 @@
 #include "scenejunction.h"
 
 #include <QPen>
-//#include <QPointF>
 #include <QLineF>
 
 /*************************************************************************************/
@@ -33,21 +32,52 @@
 
 SceneRoad::SceneRoad( SceneJunction* sj )
 {
-  // Create a new road starting from junction
+  // initialise private variables
+  start = sj;
+  end   = 0;
+
+  // create a new road starting from start junction
   qreal  x = sj->x();
   qreal  y = sj->y();
 
+  // road scene item is black line
   setLine( x, y, x+1, y+1 );
   setPen( QPen( Qt::black, 3 ) );
   setZValue( 50 );
+}
+
+/************************************** adjust ***************************************/
+
+void SceneRoad::adjust()
+{
+  // update the road line to the junction positions
+  QLineF  road;
+  road.setP1( start->pos() );
+  road.setP2( end->pos() );
+  setLine( road );
 }
 
 /*********************************** updateNewRoad ***********************************/
 
 void SceneRoad::updateNewRoad( QPointF pos )
 {
-  // Update the end of new road
+  // update end of new road to point
   QLineF  road( line() );
   road.setP2( pos );
   setLine( road );
+}
+
+/********************************** completeNewRoad **********************************/
+
+void SceneRoad::completeNewRoad( SceneJunction* ej )
+{
+  // complete new road
+  end = ej;
+  adjust();
+
+  // register this road with the two scene junctions
+  end->addRoad( this );
+  start->addRoad( this );
+
+  // TODO create associated sim road ...
 }

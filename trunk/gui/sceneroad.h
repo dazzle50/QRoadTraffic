@@ -31,10 +31,18 @@ class SceneJunction;
 
 class SceneRoad : public QGraphicsLineItem
 {
+private:
+  SceneJunction*  start;       // SceneJunction at road start
+  SceneJunction*  end;         // SceneJunction at road end
+
 public:
   SceneRoad( SceneJunction* );                           // constructor
 
-  void  updateNewRoad( QPointF );                        // Update end of new road
+  void  updateNewRoad( QPointF );                        // update end of new road
+  void  completeNewRoad( SceneJunction* );               // complete new road
+  void  adjust();                                        // adjust road ends
+
+  SceneJunction*  startJunction() { return start; }      // return start SceneJunction
 };
 
 #endif // SCENEROAD_H

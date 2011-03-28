@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "scenejunction.h"
+#include "sceneroad.h"
 #include "../sim/junction.h"
 
 #include <QPen>
@@ -31,7 +32,7 @@
 
 SceneJunction::SceneJunction( Junction* junction )
 {
-  // Junction scene item is a red circle with a black border
+  // junction scene item is a red circle with a black border
   float   radius = 6.0;
 
   setRect( -radius, -radius, 2*radius, 2*radius );
@@ -41,5 +42,20 @@ SceneJunction::SceneJunction( Junction* junction )
   setZValue( 100 );
   setFlags( QGraphicsItem::ItemIsMovable |
             QGraphicsItem::ItemIsSelectable |
-            QGraphicsItem::ItemIgnoresTransformations );
+            QGraphicsItem::ItemIgnoresTransformations |
+            QGraphicsItem::ItemSendsGeometryChanges );
+}
+
+/************************************ itemChange *************************************/
+
+QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& value )
+{
+  // if the junction moved then adjust each road connected to the junction
+  if ( change == QGraphicsItem::ItemPositionChange )
+  {
+    foreach( SceneRoad* road, roads )
+      road->adjust();
+  }
+
+  return QGraphicsItem::itemChange(change, value);
 }

@@ -113,6 +113,32 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   }
 }
 
+/********************************* mousePressEvent ***********************************/
+
+void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
+{
+  // if not adding new road, just call base mousePressEvent to handle
+  if (newRoad == 0)
+  {
+    QGraphicsScene::mousePressEvent( event );
+    return;
+  }
+
+  // check if user clicked a juntion to end new road
+  qreal  x   = event->scenePos().x();
+  qreal  y   = event->scenePos().y();
+  SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
+  if ( junction )
+  {
+    // check clicked junction is not the road start junction
+    if ( junction != newRoad->startJunction() )
+    {
+      newRoad->completeNewRoad( junction );
+      newRoad = 0;
+    }
+  }
+}
+
 /********************************** mouseMoveEvent ***********************************/
 
 void  Scene::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
