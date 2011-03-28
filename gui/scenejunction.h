@@ -22,6 +22,7 @@
 #define SCENEJUNCTION_H
 
 class Junction;
+class SceneRoad;
 
 #include <QGraphicsEllipseItem>
 
@@ -31,8 +32,15 @@ class Junction;
 
 class SceneJunction : public QGraphicsEllipseItem
 {
+private:
+  QList<SceneRoad*>  roads;               // list of roads connected to junction
+
 public:
-  SceneJunction( Junction* );                         // constructor
+  SceneJunction( Junction* );                                    // constructor
+
+  void addRoad( SceneRoad* road )  { roads << road; }            // add road to roads list
+
+  QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 };
 
 #endif // SCENEJUNCTION_H

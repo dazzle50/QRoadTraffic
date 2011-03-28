@@ -41,6 +41,7 @@ public:
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
   void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
+  void  mousePressEvent( QGraphicsSceneMouseEvent* );        // receive mouse press events
 };
 
 #endif  // SCENE_H
