@@ -43,6 +43,7 @@ public:
   void  adjust();                                        // adjust road ends
 
   SceneJunction*  startJunction() { return start; }      // return start SceneJunction
+  SceneJunction*  endJunction() { return end; }          // return end SceneJunction
 };
 
 #endif // SCENEROAD_H

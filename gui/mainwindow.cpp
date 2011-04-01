@@ -43,7 +43,7 @@ MainWindow::MainWindow() : QMainWindow()
   helpMenu->addAction("Build with Qt"QT_VERSION_STR);
 
   // create scene and central widget view of scene
-  m_scene               = new Scene();
+  m_scene               = new Scene( this );
   QGraphicsView*   view = new QGraphicsView( m_scene );
   view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
   view->setFrameStyle( 0 );

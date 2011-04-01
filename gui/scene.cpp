@@ -18,10 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QGraphicsSceneContextMenuEvent>
-#include <QMenu>
-#include <QAction>
-
 #include "scene.h"
 #include "scenejunction.h"
 #include "sceneroad.h"
@@ -30,13 +26,18 @@
 #include "../sim/junction.h"
 #include "../sim/trafficgenerator.h"
 
+#include <QGraphicsSceneContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+
 /*************************************************************************************/
 /******************** Scene representing the simulated landscape *********************/
 /*************************************************************************************/
 
 /************************************ constuctor *************************************/
 
-Scene::Scene() : QGraphicsScene()
+Scene::Scene( QWidget* mainWindow ) : QGraphicsScene()
 {
   // create invisible item to provide default top-left anchor to scene
   addLine( 0, 0, 0, 1, QPen(Qt::transparent, 1) );
@@ -69,6 +70,29 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
     return;
   }
 
+  // if user clicked a road, display road context menu
+  SceneRoad*  road = dynamic_cast<SceneRoad*>( itemAt( x, y ) );
+  if ( road )
+  {
+    QAction*  roadProp = menu.addAction("Road properties");
+    QAction*  delRoad  = menu.addAction("Delete Road");
+    QAction*  action   = menu.exec( event->screenPos() );
+
+    if ( action == roadProp )
+    {
+      QMessageBox::information( mainWindow, "Road properties", "NOT YET IMPLEMENTED !!!");
+      return;
+    }
+
+    if ( action == delRoad )
+    {
+      QMessageBox::information( mainWindow, "Delete Road", "NOT YET IMPLEMENTED !!!");
+      return;
+    }
+
+    return;
+  }
+
   // if user clicked a junction, display junction context menu
   SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
   if ( junction )
@@ -80,9 +104,9 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == addRoad )
     {
-      // qDebug("Scene::contextMenuEvent Junction - Add Road");
       newRoad = new SceneRoad( junction );
       addItem( newRoad );
+
       // move mouse cursor by one pixel to trigger a mouseMoveEvent
       QCursor::setPos( QCursor::pos() + QPoint(1,0) );
       return;
@@ -90,13 +114,13 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == junctionProp )
     {
-      qDebug("Scene::contextMenuEvent Junction - Properties");
+      QMessageBox::information( mainWindow, "Junction properties", "NOT YET IMPLEMENTED !!!");
       return;
     }
 
     if ( action == delJunction )
     {
-      qDebug("Scene::contextMenuEvent Junction - Delete");
+      QMessageBox::information( mainWindow, "Delete Junction", "NOT YET IMPLEMENTED !!!");
       return;
     }
 
@@ -109,7 +133,6 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   {
     Junction* newJunc = new Junction( x, y, new TrafficGenerator() );
     addItem( new SceneJunction( newJunc ) );
-    qDebug( qPrintable( QString("Junction added at %1,%2").arg(x).arg(y) ) );
   }
 }
 
@@ -130,12 +153,15 @@ void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
   SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
   if ( junction )
   {
-    // check clicked junction is not the road start junction
-    if ( junction != newRoad->startJunction() )
-    {
-      newRoad->completeNewRoad( junction );
-      newRoad = 0;
-    }
+    // don't complete road if clicked junction is new road start junction
+    if ( junction == newRoad->startJunction() ) return;
+
+    // don't complete road if road already exists between the two junctions
+    if ( roadExists( junction, newRoad->startJunction() )) return;
+
+    // complete new road
+    newRoad->completeNewRoad( junction );
+    newRoad = 0;
   }
 }
 
@@ -152,6 +178,24 @@ void  Scene::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
 
   // update new road
   newRoad->updateNewRoad( event->scenePos() );
+}
+
+/************************************ roadExists *************************************/
+
+bool  Scene::roadExists( SceneJunction* j1, SceneJunction* j2 )
+{
+  // returns TRUE if road already exists between these two scene junctions
+  foreach( QGraphicsItem* item, items() )
+  {
+    SceneRoad*  road = dynamic_cast<SceneRoad*>( item );
+    if ( road )
+    {
+      if ( j1 == road->startJunction() && j2 == road->endJunction() ) return TRUE;
+      if ( j2 == road->startJunction() && j1 == road->endJunction() ) return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 /********************************* addSimulatedItems *********************************/
