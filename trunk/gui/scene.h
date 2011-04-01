@@ -22,6 +22,7 @@
 #define SCENE_H
 
 class SceneRoad;
+class SceneJunction;
 
 #include <QGraphicsScene>
 
@@ -33,11 +34,13 @@ class Scene : public QGraphicsScene
 {
 private:
   SceneRoad*  newRoad;                // null, unless adding a new road
+  QWidget*    mainWindow;             // pointer to application main window
 
 public:
-  Scene();                            // constructor
+  Scene( QWidget* );                  // constructor
 
-  void  addSimulatedItems();          // create QGraphicsItems for simulated items
+  void  addSimulatedItems();                              // create QGraphicsItems for simulated items
+  bool  roadExists( SceneJunction*, SceneJunction* );     // returns TRUE if road already exists
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
   void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
