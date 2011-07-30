@@ -23,17 +23,18 @@
 
 class SceneJunction;
 
-#include <QGraphicsLineItem>
+#include <QGraphicsPolygonItem>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
 /*************************************************************************************/
 
-class SceneRoad : public QGraphicsLineItem
+class SceneRoad : public QGraphicsPolygonItem
 {
 private:
-  SceneJunction*  start;       // SceneJunction at road start
-  SceneJunction*  end;         // SceneJunction at road end
+  SceneJunction*     start;       // SceneJunction at road start
+  SceneJunction*     end;         // SceneJunction at road end
+  QVector<QPointF>   bends;       // bends between the road start & end
 
 public:
   SceneRoad( SceneJunction* );                           // constructor
@@ -41,6 +42,7 @@ public:
   void  updateNewRoad( QPointF );                        // update end of new road
   void  completeNewRoad( SceneJunction* );               // complete new road
   void  adjust();                                        // adjust road ends
+  void  addBend( QPointF );                              // adds bend at point
 
   SceneJunction*  startJunction() { return start; }      // return start SceneJunction
   SceneJunction*  endJunction() { return end; }          // return end SceneJunction
