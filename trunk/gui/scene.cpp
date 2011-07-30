@@ -75,12 +75,19 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   if ( road )
   {
     QAction*  roadProp = menu.addAction("Road properties");
-    QAction*  delRoad  = menu.addAction("Delete Road");
+    QAction*  addBend  = menu.addAction("Add bend");
+    QAction*  delRoad  = menu.addAction("Delete road");
     QAction*  action   = menu.exec( event->screenPos() );
 
     if ( action == roadProp )
     {
       QMessageBox::information( mainWindow, "Road properties", "NOT YET IMPLEMENTED !!!");
+      return;
+    }
+
+    if ( action == addBend )
+    {
+      road->addBend( event->scenePos() );
       return;
     }
 
@@ -98,8 +105,8 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   if ( junction )
   {
     QAction*  junctionProp = menu.addAction("Junction properties");
-    QAction*  addRoad      = menu.addAction("Add Road");
-    QAction*  delJunction  = menu.addAction("Delete Junction");
+    QAction*  addRoad      = menu.addAction("Add road");
+    QAction*  delJunction  = menu.addAction("Delete junction");
     QAction*  action       = menu.exec( event->screenPos() );
 
     if ( action == addRoad )

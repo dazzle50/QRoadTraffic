@@ -21,8 +21,10 @@
 #include "sceneroad.h"
 #include "scenejunction.h"
 
+#include <math.h>
 #include <QPen>
 #include <QLineF>
+#include <QVector2D>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
@@ -41,7 +43,9 @@ SceneRoad::SceneRoad( SceneJunction* sj )
   qreal  y = sj->y();
 
   // road scene item is black line
-  setLine( x, y, x+1, y+1 );
+  QPolygonF polygon;
+  polygon << QPointF(x,y) << QPointF(x+1,y+1);
+  setPolygon( polygon );
   setPen( QPen( Qt::black, 3 ) );
   setZValue( 50 );
 }
@@ -50,11 +54,60 @@ SceneRoad::SceneRoad( SceneJunction* sj )
 
 void SceneRoad::adjust()
 {
-  // update the road line to the junction positions
-  QLineF  road;
-  road.setP1( start->pos() );
-  road.setP2( end->pos() );
-  setLine( road );
+  // update the road polygon to the junction & bend positions
+  QPolygonF polygon;
+  polygon << start->pos() << bends << end->pos();
+  for ( int i = bends.size(); i > 0; --i )
+    polygon << bends.at(i-1);
+  polygon << start->pos();
+  setPolygon( polygon );
+}
+
+/************************************** addBend **************************************/
+
+void SceneRoad::addBend( QPointF pos )
+{
+  // if no bends yet, just add bend
+  if ( bends.size()==0 )
+  {
+    bends.append( pos );
+    return;
+  }
+
+  // otherwise need to add bend at correct position
+  int               segment = -1;
+  qreal             best    = 9e9;
+  QVector<QPointF>  road;
+  road << start->pos() << bends << end->pos();
+
+  for ( int i = 0; i < road.size()-1; ++i )
+  {
+    // t =  (linedirection . (point - lineorigin)) / (linedirection . linedirection)
+    QVector2D  ld( road.at(i+1) - road.at(i) );
+    qreal      t = QVector2D::dotProduct( ld, QVector2D( pos-road.at(i) )) /
+                   QVector2D::dotProduct( ld, ld );
+    if ( t < 0.0 ) continue;
+    if ( t > 1.0 ) continue;
+
+    // calculate distance of pos from road segment
+    qreal x0 = pos.x();
+    qreal y0 = pos.y();
+    qreal x1 = road.at(i).x();
+    qreal y1 = road.at(i).y();
+    qreal x2 = road.at(i+1).x();
+    qreal y2 = road.at(i+1).y();
+
+    qreal d = fabs((x2-x1)*(y1-y0)-(x1-x0)*(y2-y1)) /
+              sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+
+    if ( d < best )
+    {
+      segment = i;
+      best    = d;
+    }
+  }
+
+  bends.insert( segment, pos );
 }
 
 /*********************************** updateNewRoad ***********************************/
@@ -62,9 +115,9 @@ void SceneRoad::adjust()
 void SceneRoad::updateNewRoad( QPointF pos )
 {
   // update end of new road to point
-  QLineF  road( line() );
-  road.setP2( pos );
-  setLine( road );
+  QPolygonF polygon;
+  polygon << start->pos() << pos;
+  setPolygon( polygon );
 }
 
 /********************************** completeNewRoad **********************************/
