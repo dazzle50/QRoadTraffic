@@ -19,12 +19,14 @@
  ***************************************************************************/
 
 #include "sceneroad.h"
+#include "sceneroadbend.h"
 #include "scenejunction.h"
 
 #include <math.h>
 #include <QPen>
 #include <QLineF>
 #include <QVector2D>
+#include <QGraphicsScene>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
@@ -67,14 +69,7 @@ void SceneRoad::adjust()
 
 void SceneRoad::addBend( QPointF pos )
 {
-  // if no bends yet, just add bend
-  if ( bends.size()==0 )
-  {
-    bends.append( pos );
-    return;
-  }
-
-  // otherwise need to add bend at correct position
+  // need to add bend at correct position in bends list
   int               segment = -1;
   qreal             best    = 9e9;
   QVector<QPointF>  road;
@@ -107,7 +102,22 @@ void SceneRoad::addBend( QPointF pos )
     }
   }
 
+  SceneRoadBend*  sceneBend;
+  sceneBend = new SceneRoadBend( this, pos );
   bends.insert( segment, pos );
+  sceneBends.insert( segment, sceneBend );
+  scene()->addItem( sceneBend );
+  adjust();
+}
+
+/************************************* bendMoved *************************************/
+
+void SceneRoad::bendMoved( SceneRoadBend* bend )
+{
+  // receives msg that bend has been moved
+  int  i = sceneBends.indexOf( bend );
+  bends[i] = bend->pos();
+  adjust();
 }
 
 /*********************************** updateNewRoad ***********************************/

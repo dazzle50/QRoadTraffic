@@ -18,37 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SCENEROAD_H
-#define SCENEROAD_H
+#ifndef SCENEROADBEND_H
+#define SCENEROADBEND_H
 
-class SceneJunction;
-class SceneRoadBend;
+class SceneRoad;
 
 #include <QGraphicsPolygonItem>
 
 /*************************************************************************************/
-/********************** Represents a simulated road on GUI scene *********************/
+/************** Represents a bend point on a simulated road on GUI scene *************/
 /*************************************************************************************/
 
-class SceneRoad : public QGraphicsPolygonItem
+class SceneRoadBend : public QGraphicsPolygonItem
 {
 private:
-  SceneJunction*           start;        // SceneJunction at road start
-  SceneJunction*           end;          // SceneJunction at road end
-  QVector<QPointF>         bends;        // bends between the road start & end
-  QVector<SceneRoadBend*>  sceneBends;   // SceneRoadBends associated with bends
+  SceneRoad*   road;                // road associated with this bend
 
 public:
-  SceneRoad( SceneJunction* );                           // constructor
+    SceneRoadBend( SceneRoad*, QPointF );                          // constructor
 
-  void  updateNewRoad( QPointF );                        // update end of new road
-  void  completeNewRoad( SceneJunction* );               // complete new road
-  void  adjust();                                        // adjust road ends
-  void  addBend( QPointF );                              // adds bend at point
-  void  bendMoved( SceneRoadBend* );                     // receives msg that bend has been moved
-
-  SceneJunction*  startJunction() { return start; }      // return start SceneJunction
-  SceneJunction*  endJunction() { return end; }          // return end SceneJunction
+    QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 };
 
-#endif // SCENEROAD_H
+#endif // SCENEROADBEND_H
