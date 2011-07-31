@@ -44,6 +44,7 @@ SceneRoadBend::SceneRoadBend( SceneRoad* sceneRoad, QPointF pos )
             QGraphicsItem::ItemIsSelectable |
             QGraphicsItem::ItemIgnoresTransformations |
             QGraphicsItem::ItemSendsGeometryChanges );
+  setParentItem( sceneRoad );
 }
 
 /************************************ itemChange *************************************/

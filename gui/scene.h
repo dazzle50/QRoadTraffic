@@ -40,6 +40,7 @@ public:
   Scene( QWidget* );                  // constructor
 
   void  addSimulatedItems();                              // create QGraphicsItems for simulated items
+  void  removeRoad( SceneRoad* );                         // removes road from scene
   bool  roadExists( SceneJunction*, SceneJunction* );     // returns TRUE if road already exists
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
