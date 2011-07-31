@@ -93,7 +93,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == delRoad )
     {
-      QMessageBox::information( mainWindow, "Delete Road", "NOT YET IMPLEMENTED !!!");
+      removeRoad( road );
       return;
     }
 
@@ -127,7 +127,14 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == delJunction )
     {
-      QMessageBox::information( mainWindow, "Delete Junction", "NOT YET IMPLEMENTED !!!");
+      if ( junction->hasRoads() )
+        QMessageBox::information( mainWindow, "Delete Junction",
+                                  "Remove all associated roads before deleting junction.");
+      else
+      {
+        removeItem( junction );
+        delete junction;
+      }
       return;
     }
 
@@ -176,15 +183,25 @@ void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
 
 void  Scene::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
 {
-  // if not adding new road, just call base mouseMoveEvent to handle
-  if (newRoad == 0)
+  // if adding new road, update new road position
+  if ( newRoad ) newRoad->updateNewRoad( event->scenePos() );
+
+  QGraphicsScene::mouseMoveEvent( event );
+}
+
+/************************************ removeRoad *************************************/
+
+void  Scene::removeRoad( SceneRoad* road )
+{
+  // removes road from scene including junction associations
+  foreach( QGraphicsItem* item, items() )
   {
-    QGraphicsScene::mouseMoveEvent( event );
-    return;
+    SceneJunction*  junction = dynamic_cast<SceneJunction*>( item );
+    if ( junction ) junction->removeRoad( road );
   }
 
-  // update new road
-  newRoad->updateNewRoad( event->scenePos() );
+  removeItem( road );
+  delete road;
 }
 
 /************************************ roadExists *************************************/
@@ -207,7 +224,7 @@ bool  Scene::roadExists( SceneJunction* j1, SceneJunction* j2 )
 
 /********************************* addSimulatedItems *********************************/
 
-void Scene::addSimulatedItems()
+void Scene::addSimulatedItems()  // TODO REMOVE !!!!!!!!!!!!!!!!
 {
   // add simulated items to the scene (NO LONGER NEEDED??? TODO)
 

@@ -104,9 +104,8 @@ void SceneRoad::addBend( QPointF pos )
 
   SceneRoadBend*  sceneBend;
   sceneBend = new SceneRoadBend( this, pos );
-  bends.insert( segment, pos );
   sceneBends.insert( segment, sceneBend );
-  scene()->addItem( sceneBend );
+  bends.insert( segment, pos );
   adjust();
 }
 
