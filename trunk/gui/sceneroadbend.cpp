@@ -18,37 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SCENEROAD_H
-#define SCENEROAD_H
+#include "sceneroadbend.h"
+#include "sceneroad.h"
 
-class SceneJunction;
-class SceneRoadBend;
-
-#include <QGraphicsPolygonItem>
+#include <QPen>
 
 /*************************************************************************************/
-/********************** Represents a simulated road on GUI scene *********************/
+/************** Represents a bend point on a simulated road on GUI scene *************/
 /*************************************************************************************/
 
-class SceneRoad : public QGraphicsPolygonItem
+/************************************ constuctor *************************************/
+
+SceneRoadBend::SceneRoadBend( SceneRoad* sceneRoad, QPointF pos )
 {
-private:
-  SceneJunction*           start;        // SceneJunction at road start
-  SceneJunction*           end;          // SceneJunction at road end
-  QVector<QPointF>         bends;        // bends between the road start & end
-  QVector<SceneRoadBend*>  sceneBends;   // SceneRoadBends associated with bends
+  // road-bend scene item is a green diamond with a black border
+  road = sceneRoad;
+  QPolygonF  polygon;
+  polygon << QPointF(0,5) << QPointF(5,0) << QPointF(0,-5) << QPointF(-5,0);
+  setPolygon( polygon );
+  setPos( pos );
+  setPen( QPen(Qt::black) );
+  setBrush( Qt::green );
+  setZValue( 50 );
+  setFlags( QGraphicsItem::ItemIsMovable |
+            QGraphicsItem::ItemIsSelectable |
+            QGraphicsItem::ItemIgnoresTransformations |
+            QGraphicsItem::ItemSendsGeometryChanges );
+}
 
-public:
-  SceneRoad( SceneJunction* );                           // constructor
+/************************************ itemChange *************************************/
 
-  void  updateNewRoad( QPointF );                        // update end of new road
-  void  completeNewRoad( SceneJunction* );               // complete new road
-  void  adjust();                                        // adjust road ends
-  void  addBend( QPointF );                              // adds bend at point
-  void  bendMoved( SceneRoadBend* );                     // receives msg that bend has been moved
+QVariant	SceneRoadBend::itemChange( GraphicsItemChange change, const QVariant& value )
+{
+  // if the scene bend moved then adjust associated road
+  if ( change == QGraphicsItem::ItemPositionHasChanged )
+    road->bendMoved( this );
 
-  SceneJunction*  startJunction() { return start; }      // return start SceneJunction
-  SceneJunction*  endJunction() { return end; }          // return end SceneJunction
-};
-
-#endif // SCENEROAD_H
+  return QGraphicsItem::itemChange(change, value);
+}

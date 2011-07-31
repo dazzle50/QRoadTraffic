@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     sim/vehicle.cpp \
     gui/scenejunction.cpp \
     gui/sceneroad.cpp \
-    gui/scenevehicle.cpp
+    gui/scenevehicle.cpp \
+    gui/sceneroadbend.cpp
 HEADERS += sim/junction.h \
     gui/mainwindow.h \
     sim/road.h \
@@ -23,4 +24,5 @@ HEADERS += sim/junction.h \
     sim/vehicle.h \
     gui/scenejunction.h \
     gui/sceneroad.h \
-    gui/scenevehicle.h
+    gui/scenevehicle.h \
+    gui/sceneroadbend.h
