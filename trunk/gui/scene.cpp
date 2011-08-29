@@ -21,6 +21,7 @@
 #include "scene.h"
 #include "scenejunction.h"
 #include "sceneroad.h"
+#include "sceneroadbend.h"
 #include "scenevehicle.h"
 #include "../sim/simulation.h"
 #include "../sim/junction.h"
@@ -81,7 +82,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == roadProp )
     {
-      QMessageBox::information( mainWindow, "Road properties", "NOT YET IMPLEMENTED !!!");
+      road->showProperties();
       return;
     }
 
@@ -121,7 +122,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == junctionProp )
     {
-      QMessageBox::information( mainWindow, "Junction properties", "NOT YET IMPLEMENTED !!!");
+      junction->showProperties();
       return;
     }
 
@@ -135,6 +136,22 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
         removeItem( junction );
         delete junction;
       }
+      return;
+    }
+
+    return;
+  }
+
+  // if user clicked a road bend, display road bend context menu
+  SceneRoadBend*  roadBend = dynamic_cast<SceneRoadBend*>( itemAt( x, y ) );
+  if ( roadBend )
+  {
+    QAction*  delBend  = menu.addAction("Delete bend");
+    QAction*  action   = menu.exec( event->screenPos() );
+
+    if ( action == delBend )
+    {
+      roadBend->onRoad()->deleteBend( roadBend );
       return;
     }
 

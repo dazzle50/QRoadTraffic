@@ -43,9 +43,11 @@ public:
 
   void  updateNewRoad( QPointF );                        // update end of new road
   void  completeNewRoad( SceneJunction* );               // complete new road
-  void  adjust();                                        // adjust road ends
+  void  adjust();                                        // update road path
   void  addBend( QPointF );                              // adds bend at point
   void  bendMoved( SceneRoadBend* );                     // receives msg that bend has been moved
+  void  showProperties();                                // show properties dialog
+  void  deleteBend( SceneRoadBend* );                    // delete bend from road
 
   SceneJunction*  startJunction() { return start; }      // return start SceneJunction
   SceneJunction*  endJunction() { return end; }          // return end SceneJunction

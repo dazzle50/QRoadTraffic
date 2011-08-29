@@ -59,3 +59,14 @@ QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& v
 
   return QGraphicsItem::itemChange(change, value);
 }
+
+/********************************** showProperties ***********************************/
+
+void SceneJunction::showProperties()
+{
+  qDebug("SceneJunction::showProperties()  %p", this);
+  // TODO
+
+
+
+}

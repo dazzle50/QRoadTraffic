@@ -37,6 +37,8 @@ private:
 public:
     SceneRoadBend( SceneRoad*, QPointF );                          // constructor
 
+    SceneRoad*  onRoad() { return road; }      // returns road associated with this bend
+
     QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 };
 

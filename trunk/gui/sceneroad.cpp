@@ -119,6 +119,19 @@ void SceneRoad::bendMoved( SceneRoadBend* bend )
   adjust();
 }
 
+/************************************ deleteBend *************************************/
+
+void SceneRoad::deleteBend( SceneRoadBend* bend )
+{
+  // remove bend from road and delete scene item
+  int  i = sceneBends.indexOf( bend );
+  bends.remove( i );
+  sceneBends.remove( i );
+  delete bend;
+
+  adjust();
+}
+
 /*********************************** updateNewRoad ***********************************/
 
 void SceneRoad::updateNewRoad( QPointF pos )
@@ -142,4 +155,15 @@ void SceneRoad::completeNewRoad( SceneJunction* ej )
   start->addRoad( this );
 
   // TODO create associated sim road ...
+}
+
+/********************************** showProperties ***********************************/
+
+void SceneRoad::showProperties()
+{
+  qDebug("SceneRoad::showProperties()  %p", this);
+  // TODO
+
+
+
 }

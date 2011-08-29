@@ -38,9 +38,11 @@ private:
 public:
   SceneJunction( Junction* );                                    // constructor
 
-  void addRoad( SceneRoad* road )  { roads << road; }                // add road to roads list
-  void removeRoad( SceneRoad* road )  { roads.removeAll( road ); }   // add road to roads list
-  bool hasRoads() { return !roads.isEmpty(); }                       // return TRUE if has associated roads
+  void  addRoad( SceneRoad* road )  { roads << road; }                // add road to roads list
+  void  removeRoad( SceneRoad* road )  { roads.removeAll( road ); }   // remove road from roads list
+
+  bool  hasRoads() { return !roads.isEmpty(); }          // return TRUE if has associated roads
+  void  showProperties();                                // show properties dialog
 
   QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 };
