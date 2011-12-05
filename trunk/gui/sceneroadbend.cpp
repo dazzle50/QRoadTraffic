@@ -42,7 +42,6 @@ SceneRoadBend::SceneRoadBend( SceneRoad* sceneRoad, QPointF pos )
   setZValue( 50 );
   setFlags( QGraphicsItem::ItemIsMovable |
             QGraphicsItem::ItemIsSelectable |
-            QGraphicsItem::ItemIgnoresTransformations |
             QGraphicsItem::ItemSendsGeometryChanges );
   setParentItem( sceneRoad );
 }

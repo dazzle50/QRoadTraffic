@@ -23,6 +23,7 @@
 #include "../sim/junction.h"
 
 #include <QPen>
+#include <QWidget>
 
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
@@ -42,7 +43,6 @@ SceneJunction::SceneJunction( Junction* junction )
   setZValue( 100 );
   setFlags( QGraphicsItem::ItemIsMovable |
             QGraphicsItem::ItemIsSelectable |
-            QGraphicsItem::ItemIgnoresTransformations |
             QGraphicsItem::ItemSendsGeometryChanges );
 }
 
@@ -67,6 +67,9 @@ void SceneJunction::showProperties()
   qDebug("SceneJunction::showProperties()  %p", this);
   // TODO
 
-
-
+  QWidget* prop = new QWidget( 0, Qt::Tool );
+  prop->setAttribute( Qt::WA_DeleteOnClose, true );
+  prop->resize( 200, 101 );
+  prop->setWindowTitle( "Junction properties" );
+  prop->show();
 }
