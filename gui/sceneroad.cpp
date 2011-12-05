@@ -24,6 +24,7 @@
 
 #include <math.h>
 #include <QPen>
+#include <QWidget>
 #include <QLineF>
 #include <QVector2D>
 #include <QGraphicsScene>
@@ -164,6 +165,9 @@ void SceneRoad::showProperties()
   qDebug("SceneRoad::showProperties()  %p", this);
   // TODO
 
-
-
+  QWidget* prop = new QWidget( 0, Qt::Tool );
+  prop->setAttribute( Qt::WA_DeleteOnClose, true );
+  prop->resize( 200, 101 );
+  prop->setWindowTitle( "Road properties" );
+  prop->show();
 }

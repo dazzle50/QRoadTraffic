@@ -24,6 +24,7 @@
 #include <QMainWindow>
 
 class Scene;
+class QGraphicsView;
 
 /*************************************************************************************/
 /********************* Main application window for QRoadTraffic **********************/
@@ -31,11 +32,17 @@ class Scene;
 
 class MainWindow : public QMainWindow
 {
+  Q_OBJECT
 public:
   MainWindow();                       // constructor
 
+public slots:
+  void  zoomIn();                     // slot to receive zoom in action signals
+  void  zoomOut();                    // slot to receive zoom out action signals
+
 private:
-  Scene*       m_scene;               // scene representing the simulated landscape
+  Scene*          m_scene;            // scene representing the simulated landscape
+  QGraphicsView*  m_view;             // view of scene showing simulated landscape
 };
 
 #endif  // MAINWINDOW_H

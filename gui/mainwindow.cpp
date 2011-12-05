@@ -33,24 +33,43 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
-  // add drop down menus
-  QMenu* fileMenu = menuBar()->addMenu("&File");
-  QMenu* editMenu = menuBar()->addMenu("&Edit");
-  QMenu* viewMenu = menuBar()->addMenu("&View");
-  QMenu* simMenu  = menuBar()->addMenu("&Simulate");
-  QMenu* helpMenu = menuBar()->addMenu("&Help");
-
-  helpMenu->addAction("Build with Qt"QT_VERSION_STR);
-
   // create scene and central widget view of scene
-  m_scene               = new Scene( this );
-  QGraphicsView*   view = new QGraphicsView( m_scene );
-  view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
-  view->setFrameStyle( 0 );
-  view->setRenderHint( QPainter::Antialiasing );
-  view->setMouseTracking( TRUE );
-  setCentralWidget( view );
+  m_scene = new Scene( this );
+  m_view  = new QGraphicsView( m_scene );
+  m_view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
+  m_view->setFrameStyle( 0 );
+  m_view->setRenderHint( QPainter::Antialiasing );
+  m_view->setMouseTracking( TRUE );
+  setCentralWidget( m_view );
+
+  // add drop down menus
+  QMenu* fileMenu = menuBar()->addMenu( "&File" );
+  QMenu* editMenu = menuBar()->addMenu( "&Edit" );
+  QMenu* viewMenu = menuBar()->addMenu( "&View" );
+  QMenu* simMenu  = menuBar()->addMenu( "&Simulate" );
+  QMenu* helpMenu = menuBar()->addMenu( "&Help" );
+
+  // add menu actions
+  viewMenu->addAction( "Zoom in", this, SLOT(zoomIn()), QKeySequence(QKeySequence::ZoomIn) );
+  viewMenu->addAction( "Zoom out", this, SLOT(zoomOut()), QKeySequence(QKeySequence::ZoomOut) );
+  helpMenu->addAction( "Build with Qt"QT_VERSION_STR );
 
   // add status bar message
   statusBar()->showMessage("QRoadTraffic has started");
+}
+
+/************************************** zoomIn ***************************************/
+
+void  MainWindow::zoomIn()
+{
+  qDebug("MainWindow::zoomIn()");
+  m_view->scale( 2.0, 2.0 );
+}
+
+/************************************** zoomOut **************************************/
+
+void  MainWindow::zoomOut()
+{
+  qDebug("MainWindow::zoomOut()");
+  m_view->scale( 0.5, 0.5 );
 }
