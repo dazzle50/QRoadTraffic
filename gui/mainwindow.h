@@ -37,8 +37,12 @@ public:
   MainWindow();                       // constructor
 
 public slots:
-  void  zoomIn();                     // slot to receive zoom in action signals
-  void  zoomOut();                    // slot to receive zoom out action signals
+  void  zoomIn();                     // slot to receive zoom in action signal
+  void  zoomOut();                    // slot to receive zoom out action signal
+  void  loadBackground();             // slot to receive load background action signal
+  void  newScene();                   // slot to receive new scene action signal
+  void  loadScene();                  // slot to receive load scene action signal
+  bool  saveAsScene();                // slot to receive save as scene action signal
 
 private:
   Scene*          m_scene;            // scene representing the simulated landscape
