@@ -48,9 +48,11 @@ public:
   void  bendMoved( SceneRoadBend* );                     // receives msg that bend has been moved
   void  showProperties();                                // show properties dialog
   void  deleteBend( SceneRoadBend* );                    // delete bend from road
+  void  setBends( QList<SceneRoadBend*> );               // set bends to list
 
-  SceneJunction*  startJunction() { return start; }      // return start SceneJunction
-  SceneJunction*  endJunction() { return end; }          // return end SceneJunction
+  SceneJunction*           startJunction() { return start; }      // return start SceneJunction
+  SceneJunction*           endJunction() { return end; }          // return end SceneJunction
+  QVector<SceneRoadBend*>  roadBends() { return sceneBends; }     // return vector of bends
 };
 
 #endif // SCENEROAD_H

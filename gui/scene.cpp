@@ -31,6 +31,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QMessageBox>
+#include <QXmlStreamReader>
 
 /*************************************************************************************/
 /******************** Scene representing the simulated landscape *********************/
@@ -45,8 +46,6 @@ Scene::Scene( QWidget* mainWindow ) : QGraphicsScene()
 
   // initialise private variables
   newRoad = 0;
-
-  addSimulatedItems();
 }
 
 /********************************* contextMenuEvent **********************************/
@@ -239,21 +238,77 @@ bool  Scene::roadExists( SceneJunction* j1, SceneJunction* j2 )
   return FALSE;
 }
 
-/********************************* addSimulatedItems *********************************/
+/************************************ readStream *************************************/
 
-void Scene::addSimulatedItems()  // TODO REMOVE !!!!!!!!!!!!!!!!
+void  Scene::readStream( QXmlStreamReader* stream )
 {
-  // add simulated items to the scene (NO LONGER NEEDED??? TODO)
+  // prepare working variables
+  QList<SceneJunction*>  junc_lookup;   // lookup of junctions against id in stream
+  QList<SceneRoadBend*>  bends;         // list of bends for road
+  SceneRoad*             sRoad = 0;     // current road
 
-  // add junctions
-  foreach( Junction* junction, sim->junctions() )
-    new SceneJunction( junction );
+  // read station data from xml stream
+  while ( !stream->atEnd() )
+  {
+    stream->readNext();
+    //qDebug("Scene::readStream() - not finished... %s", qPrintable(stream->name().toString()) );
 
-  // add roads
-  //foreach( Road* road, sim->roads() )
-    //new SceneRoad( this, road );
+    // create junctions also building lookup list against id
+    if ( stream->isStartElement() && stream->name() == "junction" )
+    {
+      int id = -1;
+      qreal x = 0.0, y = 0.0;
+      foreach( QXmlStreamAttribute attribute, stream->attributes() )
+      {
+        if ( attribute.name() == "id" ) id = attribute.value().toString().toInt();
+        if ( attribute.name() == "x"  ) x  = attribute.value().toString().toDouble();
+        if ( attribute.name() == "y"  ) y  = attribute.value().toString().toDouble();
+      }
+      qDebug("New junction id=%i x=%f y=%f", id, x, y );
+      Junction*       newJunc = new Junction( x, y, new TrafficGenerator() );
+      SceneJunction*  sJunc   = new SceneJunction( newJunc );
+      addItem( sJunc );
+      junc_lookup.append( sJunc );
+    }
 
-  // add vehicles
-  foreach( Vehicle* vehicle, sim->vehicles() )
-    new SceneVehicle( this, vehicle );
+    // create roads
+    if ( stream->isStartElement() && stream->name() == "road" )
+    {
+      int s = -1, e = -1;
+      foreach( QXmlStreamAttribute attribute, stream->attributes() )
+      {
+        if ( attribute.name() == "start" ) s = attribute.value().toString().toInt();
+        if ( attribute.name() == "end"   ) e = attribute.value().toString().toInt();
+      }
+      qDebug("New road s=%i e=%i", s, e );
+      sRoad = new SceneRoad( junc_lookup.at(s) );
+      sRoad->completeNewRoad( junc_lookup.at(e) );
+      addItem( sRoad );
+    }
+
+    // collect bends for the current road
+    if ( stream->isStartElement() && stream->name() == "bend" )
+    {
+      qreal x = 0.0, y = 0.0;
+      foreach( QXmlStreamAttribute attribute, stream->attributes() )
+      {
+        if ( attribute.name() == "x"  ) x  = attribute.value().toString().toDouble();
+        if ( attribute.name() == "y"  ) y  = attribute.value().toString().toDouble();
+      }
+      qDebug("New bend x=%f y=%f", x, y );
+      //addItem( new Station( x, y ) );
+      bends.append( new SceneRoadBend( sRoad, QPointF(x,y) ) );
+    }
+
+    // when at end of current road element set the collected bends
+    if ( stream->isEndElement() && stream->name() == "road" )
+    {
+      if ( sRoad )
+      {
+        sRoad->setBends( bends );
+        sRoad = 0;
+        bends.clear();
+      }
+    }
+  }
 }
