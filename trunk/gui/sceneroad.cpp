@@ -133,6 +133,21 @@ void SceneRoad::deleteBend( SceneRoadBend* bend )
   adjust();
 }
 
+/************************************* setBends **************************************/
+
+void SceneRoad::setBends( QList<SceneRoadBend*> list )
+{
+  // set road bends to that in list
+  bends.clear();
+  sceneBends.clear();
+  foreach( SceneRoadBend* bend, list )
+  {
+    bends.append( bend->pos() );
+    sceneBends.append( bend );
+  }
+  adjust();
+}
+
 /*********************************** updateNewRoad ***********************************/
 
 void SceneRoad::updateNewRoad( QPointF pos )

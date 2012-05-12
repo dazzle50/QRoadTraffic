@@ -31,6 +31,7 @@
 #include <QFileDialog>
 #include <QXmlStreamWriter>
 #include <QDateTime>
+#include <QMessageBox>
 
 /*************************************************************************************/
 /********************* Main application window for QRoadTraffic **********************/
@@ -67,7 +68,7 @@ MainWindow::MainWindow() : QMainWindow()
   helpMenu->addAction( "Build with Qt"QT_VERSION_STR );
 
   // add status bar message
-  statusBar()->showMessage("QRoadTraffic has started");
+  statusBar()->showMessage( "QRoadTraffic has started" );
 }
 
 /************************************* newScene **************************************/
@@ -75,21 +76,64 @@ MainWindow::MainWindow() : QMainWindow()
 void  MainWindow::newScene()
 {
   qDebug("MainWindow::newScene()");
+
+  QMessageBox::information( this, "New...", "Not yet implemented !!!");
 }
 
 /************************************* loadScene *************************************/
 
 void  MainWindow::loadScene()
 {
-  qDebug("MainWindow::loadScene()");
+  // get user to select filename and location
+  QString filename = QFileDialog::getOpenFileName();
+  if ( filename.isEmpty() ) return;
+
+  // open the file and check we can read from it
+  QFile file( filename );
+  if ( !file.open( QIODevice::ReadOnly ) )
+  {
+    statusBar()->showMessage( QString("Failed to open '%1'").arg(filename) );
+    return;
+  }
+
+  // open an xml stream reader and load simulation data
+  QXmlStreamReader  stream( &file );
+  Scene*            newScene = new Scene( this );
+  while ( !stream.atEnd() )
+  {
+    stream.readNext();
+    if ( stream.isStartElement() )
+    {
+      if ( stream.name() == "qroadtraffic" )
+        newScene->readStream( &stream );
+      else
+        stream.raiseError( QString("Unrecognised element '%1'").arg(stream.name().toString()) );
+    }
+  }
+
+  // check if error occured
+  if ( stream.hasError() )
+  {
+    file.close();
+    statusBar()->showMessage( QString("Failed to load '%1' (%2)").arg(filename).arg(stream.errorString()) );
+    delete newScene;
+    return;
+  }
+
+  // close file, display new scene, delete old scene, and display useful message
+  file.close();
+  QGraphicsView*   view = dynamic_cast<QGraphicsView*>( centralWidget() );
+  view->setScene( newScene );
+  delete m_scene;
+  m_scene = newScene;
+  statusBar()->showMessage( QString("Loaded '%1'").arg(filename) );
+  return;
 }
 
-/************************************* saveScene *************************************/
+/************************************ saveAsScene ************************************/
 
 bool  MainWindow::saveAsScene()
 {
-  qDebug("MainWindow::saveAsScene()");
-
   // get user to select filename and location
   QString filename = QFileDialog::getSaveFileName();
   if ( filename.isEmpty() ) return false;
@@ -98,7 +142,7 @@ bool  MainWindow::saveAsScene()
   QFile file( filename );
   if ( !file.open( QIODevice::WriteOnly ) )
   {
-    //showMessage( QString("Failed to write to '%1'").arg(filename) );
+    statusBar()->showMessage( QString("Failed to write to '%1'").arg(filename) );
     return false;
   }
 
@@ -107,47 +151,53 @@ bool  MainWindow::saveAsScene()
   stream.setAutoFormatting( true );
   stream.writeStartDocument();
   stream.writeStartElement( "qroadtraffic" );
-  stream.writeAttribute( "version", "2012-04" );
+  stream.writeAttribute( "version", "2012-05" );
   stream.writeAttribute( "user", QString(getenv("USERNAME")) );
   stream.writeAttribute( "when", QDateTime::currentDateTime().toString(Qt::ISODate) );
 
-  // write scene data to xml stream
-  foreach( QGraphicsItem*  item, m_scene->items() )
+  // collect pointers to all scene junctions into a list
+  QList<SceneJunction*> juncs;
+  foreach( QGraphicsItem* item, m_scene->items() )
   {
     SceneJunction*  junc = dynamic_cast<SceneJunction*>( item );
-    if ( junc )
-    {
-      stream.writeEmptyElement( "junction" );
-      stream.writeAttribute( "x", QString("%1").arg(junc->x()) );
-      stream.writeAttribute( "y", QString("%1").arg(junc->y()) );
-    }
+    if ( junc ) juncs.append( junc );
+  }
 
+  // write scene junction data to xml stream
+  for ( int i = 0; i < juncs.size(); ++i )
+  {
+    stream.writeEmptyElement( "junction" );
+    stream.writeAttribute( "id", QString::number( i ) );
+    stream.writeAttribute( "x" , QString::number( juncs.at(i)->x() ) );
+    stream.writeAttribute( "y" , QString::number( juncs.at(i)->y() ) );
+  }
+
+  // write road data to xml stream
+  foreach( QGraphicsItem*  item, m_scene->items() )
+  {
     SceneRoad*  road = dynamic_cast<SceneRoad*>( item );
     if ( road )
     {
-      stream.writeEmptyElement( "road" );
-      stream.writeAttribute( "start", QString("%1").arg(1) );
-      stream.writeAttribute( "end", QString("%1").arg(2) );
+      stream.writeStartElement( "road" );
+      stream.writeAttribute( "start", QString::number( juncs.indexOf(road->startJunction()) ) );
+      stream.writeAttribute( "end"  , QString::number( juncs.indexOf(road->endJunction()  ) ) );
+
+      // for each road write bend data to xml stream
+      foreach( SceneRoadBend*  bend, road->roadBends() )
+      {
+        stream.writeEmptyElement( "bend" );
+        stream.writeAttribute( "x" , QString::number( bend->x() ) );
+        stream.writeAttribute( "y" , QString::number( bend->y() ) );
+      }
+
+      stream.writeEndElement();
     }
-
-    SceneRoadBend*  bend = dynamic_cast<SceneRoadBend*>( item );
-    if ( bend )
-    {
-      stream.writeEmptyElement( "bend" );
-      stream.writeAttribute( "x", QString("%1").arg(bend->x()) );
-      stream.writeAttribute( "y", QString("%1").arg(bend->y()) );
-      stream.writeAttribute( "road", QString("%1").arg(10) );
-    }
-
-
   }
 
-
-  stream.writeEndDocument();
-
   // close the file and display useful message
+  stream.writeEndDocument();
   file.close();
-  //showMessage( QString("Saved to '%1'").arg(filename) );
+  statusBar()->showMessage( QString("Saved to '%1'").arg(filename) );
   return true;
 }
 
