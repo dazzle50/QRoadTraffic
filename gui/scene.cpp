@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Richard Crook                                   *
+ *   Copyright (C) 2012 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -251,7 +251,6 @@ void  Scene::readStream( QXmlStreamReader* stream )
   while ( !stream->atEnd() )
   {
     stream->readNext();
-    //qDebug("Scene::readStream() - not finished... %s", qPrintable(stream->name().toString()) );
 
     // create junctions also building lookup list against id
     if ( stream->isStartElement() && stream->name() == "junction" )
@@ -264,7 +263,7 @@ void  Scene::readStream( QXmlStreamReader* stream )
         if ( attribute.name() == "x"  ) x  = attribute.value().toString().toDouble();
         if ( attribute.name() == "y"  ) y  = attribute.value().toString().toDouble();
       }
-      qDebug("New junction id=%i x=%f y=%f", id, x, y );
+
       Junction*       newJunc = new Junction( x, y, new TrafficGenerator() );
       SceneJunction*  sJunc   = new SceneJunction( newJunc );
       addItem( sJunc );
@@ -280,7 +279,7 @@ void  Scene::readStream( QXmlStreamReader* stream )
         if ( attribute.name() == "start" ) s = attribute.value().toString().toInt();
         if ( attribute.name() == "end"   ) e = attribute.value().toString().toInt();
       }
-      qDebug("New road s=%i e=%i", s, e );
+
       sRoad = new SceneRoad( junc_lookup.at(s) );
       sRoad->completeNewRoad( junc_lookup.at(e) );
       addItem( sRoad );
@@ -295,8 +294,7 @@ void  Scene::readStream( QXmlStreamReader* stream )
         if ( attribute.name() == "x"  ) x  = attribute.value().toString().toDouble();
         if ( attribute.name() == "y"  ) y  = attribute.value().toString().toDouble();
       }
-      qDebug("New bend x=%f y=%f", x, y );
-      //addItem( new Station( x, y ) );
+
       bends.append( new SceneRoadBend( sRoad, QPointF(x,y) ) );
     }
 

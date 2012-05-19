@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Richard Crook                                   *
+ *   Copyright (C) 2012 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,7 +40,6 @@ private:
 public:
   Scene( QWidget* );                  // constructor
 
-  void  addSimulatedItems();                              // create QGraphicsItems for simulated items
   void  removeRoad( SceneRoad* );                         // removes road from scene
   bool  roadExists( SceneJunction*, SceneJunction* );     // returns TRUE if road already exists
   void  readStream( QXmlStreamReader* );                  // read scene data from xml stream
