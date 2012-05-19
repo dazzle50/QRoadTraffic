@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Richard Crook                                   *
+ *   Copyright (C) 2012 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -75,9 +75,32 @@ MainWindow::MainWindow() : QMainWindow()
 
 void  MainWindow::newScene()
 {
-  qDebug("MainWindow::newScene()");
+  // if no scene items (only default top-left scene anchor) then nothing to do
+  if ( m_scene->items().count() <= 1 ) return;
 
-  QMessageBox::information( this, "New...", "Not yet implemented !!!");
+  // check if user wants to save before starting new simulation
+  while (true)
+    switch ( QMessageBox::warning( this, "QRoadTraffic",
+        "Do you want to save before starting new?",
+        QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel ) )
+    {
+      case QMessageBox::Save:
+        // if save not successful ask again
+        if ( !saveAsScene() ) break;
+
+      case QMessageBox::Discard:
+        // start new simulation
+        {
+          Scene*  newScene = new Scene( this );
+          m_view->setScene( newScene );
+          delete m_scene;
+          m_scene = newScene;
+        }
+        return;
+
+      default:    // "Cancel"
+        return;
+    }
 }
 
 /************************************* loadScene *************************************/
@@ -205,7 +228,7 @@ bool  MainWindow::saveAsScene()
 
 void  MainWindow::zoomIn()
 {
-  qDebug("MainWindow::zoomIn()");
+  // zoom in on main scene view
   m_view->scale( 1.1, 1.1 );
 }
 
@@ -213,7 +236,7 @@ void  MainWindow::zoomIn()
 
 void  MainWindow::zoomOut()
 {
-  qDebug("MainWindow::zoomOut()");
+  // zoom out on main scene view
   m_view->scale( 1/1.1, 1/1.1 );
 }
 
@@ -221,8 +244,6 @@ void  MainWindow::zoomOut()
 
 void  MainWindow::loadBackground()
 {
-  qDebug("MainWindow::loadBackground()");
-
   // get user to select filename and location
   QString filename = QFileDialog::getOpenFileName();
   if ( filename.isEmpty() ) return;
