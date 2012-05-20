@@ -38,8 +38,8 @@
 SceneRoad::SceneRoad( SceneJunction* sj )
 {
   // initialise private variables
-  start = sj;
-  end   = 0;
+  m_start = sj;
+  m_end   = 0;
 
   // create a new road starting from start junction
   qreal  x = sj->x();
@@ -59,10 +59,10 @@ void SceneRoad::adjust()
 {
   // update the road polygon to the junction & bend positions
   QPolygonF polygon;
-  polygon << start->pos() << bends << end->pos();
-  for ( int i = bends.size(); i > 0; --i )
-    polygon << bends.at(i-1);
-  polygon << start->pos();
+  polygon << m_start->pos() << m_bends << m_end->pos();
+  for ( int i = m_bends.size(); i > 0; --i )
+    polygon << m_bends.at(i-1);
+  polygon << m_start->pos();
   setPolygon( polygon );
 }
 
@@ -74,7 +74,7 @@ void SceneRoad::addBend( QPointF pos )
   int               segment = -1;
   qreal             best    = 9e9;
   QVector<QPointF>  road;
-  road << start->pos() << bends << end->pos();
+  road << m_start->pos() << m_bends << m_end->pos();
 
   for ( int i = 0; i < road.size()-1; ++i )
   {
@@ -105,8 +105,8 @@ void SceneRoad::addBend( QPointF pos )
 
   SceneRoadBend*  sceneBend;
   sceneBend = new SceneRoadBend( this, pos );
-  sceneBends.insert( segment, sceneBend );
-  bends.insert( segment, pos );
+  m_sceneBends.insert( segment, sceneBend );
+  m_bends.insert( segment, pos );
   adjust();
 }
 
@@ -115,8 +115,8 @@ void SceneRoad::addBend( QPointF pos )
 void SceneRoad::bendMoved( SceneRoadBend* bend )
 {
   // receives msg that bend has been moved
-  int  i = sceneBends.indexOf( bend );
-  bends[i] = bend->pos();
+  int  i = m_sceneBends.indexOf( bend );
+  m_bends[i] = bend->pos();
   adjust();
 }
 
@@ -125,9 +125,9 @@ void SceneRoad::bendMoved( SceneRoadBend* bend )
 void SceneRoad::deleteBend( SceneRoadBend* bend )
 {
   // remove bend from road and delete scene item
-  int  i = sceneBends.indexOf( bend );
-  bends.remove( i );
-  sceneBends.remove( i );
+  int  i = m_sceneBends.indexOf( bend );
+  m_bends.remove( i );
+  m_sceneBends.remove( i );
   delete bend;
 
   adjust();
@@ -138,12 +138,12 @@ void SceneRoad::deleteBend( SceneRoadBend* bend )
 void SceneRoad::setBends( QList<SceneRoadBend*> list )
 {
   // set road bends to that in list
-  bends.clear();
-  sceneBends.clear();
+  m_bends.clear();
+  m_sceneBends.clear();
   foreach( SceneRoadBend* bend, list )
   {
-    bends.append( bend->pos() );
-    sceneBends.append( bend );
+    m_bends.append( bend->pos() );
+    m_sceneBends.append( bend );
   }
   adjust();
 }
@@ -154,7 +154,7 @@ void SceneRoad::updateNewRoad( QPointF pos )
 {
   // update end of new road to point
   QPolygonF polygon;
-  polygon << start->pos() << pos;
+  polygon << m_start->pos() << pos;
   setPolygon( polygon );
 }
 
@@ -163,12 +163,12 @@ void SceneRoad::updateNewRoad( QPointF pos )
 void SceneRoad::completeNewRoad( SceneJunction* ej )
 {
   // complete new road
-  end = ej;
+  m_end = ej;
   adjust();
 
   // register this road with the two scene junctions
-  end->addRoad( this );
-  start->addRoad( this );
+  m_end->addRoad( this );
+  m_start->addRoad( this );
 
   // TODO create associated sim road ...
 }

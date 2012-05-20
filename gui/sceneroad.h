@@ -32,12 +32,6 @@ class SceneRoadBend;
 
 class SceneRoad : public QGraphicsPolygonItem
 {
-private:
-  SceneJunction*           start;        // SceneJunction at road start
-  SceneJunction*           end;          // SceneJunction at road end
-  QVector<QPointF>         bends;        // bends between the road start & end
-  QVector<SceneRoadBend*>  sceneBends;   // SceneRoadBends associated with bends
-
 public:
   SceneRoad( SceneJunction* );                           // constructor
 
@@ -50,9 +44,18 @@ public:
   void  deleteBend( SceneRoadBend* );                    // delete bend from road
   void  setBends( QList<SceneRoadBend*> );               // set bends to list
 
-  SceneJunction*           startJunction() { return start; }      // return start SceneJunction
-  SceneJunction*           endJunction() { return end; }          // return end SceneJunction
-  QVector<SceneRoadBend*>  roadBends() { return sceneBends; }     // return vector of bends
+  SceneJunction*           startJunction()               // return start SceneJunction
+                             { return m_start; }
+  SceneJunction*           endJunction()                 // return end SceneJunction
+                             { return m_end; }
+  QVector<SceneRoadBend*>  roadBends()                   // return vector of bends
+                             { return m_sceneBends; }
+
+private:
+  SceneJunction*           m_start;        // SceneJunction at road start
+  SceneJunction*           m_end;          // SceneJunction at road end
+  QVector<QPointF>         m_bends;        // bends between the road start & end
+  QVector<SceneRoadBend*>  m_sceneBends;   // SceneRoadBends associated with bends
 };
 
 #endif // SCENEROAD_H

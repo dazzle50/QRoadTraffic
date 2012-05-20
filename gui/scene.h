@@ -33,10 +33,6 @@ class QXmlStreamReader;
 
 class Scene : public QGraphicsScene
 {
-private:
-  SceneRoad*  newRoad;                // null, unless adding a new road
-  QWidget*    mainWindow;             // pointer to application main window
-
 public:
   Scene( QWidget* );                  // constructor
 
@@ -47,6 +43,10 @@ public:
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
   void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
   void  mousePressEvent( QGraphicsSceneMouseEvent* );        // receive mouse press events
+
+private:
+  SceneRoad*  m_newRoad;                // null, unless adding a new road
+  QWidget*    m_mainWindow;             // pointer to application main window
 };
 
 #endif  // SCENE_H

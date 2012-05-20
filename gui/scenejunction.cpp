@@ -53,7 +53,7 @@ QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& v
   // if the junction moved then adjust each road connected to the junction
   if ( change == QGraphicsItem::ItemPositionHasChanged )
   {
-    foreach( SceneRoad* road, roads )
+    foreach( SceneRoad* road, m_roads )
       road->adjust();
   }
 

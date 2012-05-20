@@ -34,19 +34,24 @@ class MainWindow : public QMainWindow
 {
   Q_OBJECT
 public:
-  MainWindow();                       // constructor
+  MainWindow();                           // constructor
 
 public slots:
-  void  zoomIn();                     // slot to receive zoom in action signal
-  void  zoomOut();                    // slot to receive zoom out action signal
-  void  loadBackground();             // slot to receive load background action signal
-  void  newScene();                   // slot to receive new scene action signal
-  void  loadScene();                  // slot to receive load scene action signal
-  bool  saveAsScene();                // slot to receive save as scene action signal
+  void  viewZoomIn();                     // slot to receive zoom in action signal
+  void  viewZoomOut();                    // slot to receive zoom out action signal
+
+  void  fileLoadBackground();             // slot to receive load background action signal
+  void  fileNew();                        // slot to receive new scene action signal
+  void  fileOpen();                       // slot to receive load scene action signal
+  bool  fileSaveAs();                     // slot to receive save as scene action signal
+
+  void  loadBackground( QString );        // load scene background image from specified file
+  bool  loadSimulation( QString );        // load simulation from specified xml file
+  bool  saveSimulation( QString );        // save simulation to specified xml file
 
 private:
-  Scene*          m_scene;            // scene representing the simulated landscape
-  QGraphicsView*  m_view;             // view of scene showing simulated landscape
+  Scene*          m_scene;                // scene representing the simulated landscape
+  QGraphicsView*  m_view;                 // view of scene showing simulated landscape
 };
 
 #endif  // MAINWINDOW_H
