@@ -32,7 +32,7 @@
 SceneRoadBend::SceneRoadBend( SceneRoad* sceneRoad, QPointF pos )
 {
   // road-bend scene item is a green diamond with a black border
-  road = sceneRoad;
+  m_road = sceneRoad;
   QPolygonF  polygon;
   polygon << QPointF(0,5) << QPointF(5,0) << QPointF(0,-5) << QPointF(-5,0);
   setPolygon( polygon );
@@ -52,7 +52,7 @@ QVariant	SceneRoadBend::itemChange( GraphicsItemChange change, const QVariant& v
 {
   // if the scene bend moved then adjust associated road
   if ( change == QGraphicsItem::ItemPositionHasChanged )
-    road->bendMoved( this );
+    m_road->bendMoved( this );
 
   return QGraphicsItem::itemChange(change, value);
 }

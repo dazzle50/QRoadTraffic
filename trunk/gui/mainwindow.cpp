@@ -58,22 +58,27 @@ MainWindow::MainWindow() : QMainWindow()
   QMenu* helpMenu = menuBar()->addMenu( "&Help" );
 
   // add menu actions
-  fileMenu->addAction( "New...", this, SLOT(newScene()), QKeySequence(QKeySequence::New) );
-  fileMenu->addAction( "Open...", this, SLOT(loadScene()), QKeySequence(QKeySequence::Open) );
-  fileMenu->addAction( "Save As...", this, SLOT(saveAsScene()), QKeySequence(QKeySequence::SaveAs) );
+  fileMenu->addAction( "New...", this, SLOT(fileNew()), QKeySequence(QKeySequence::New) );
+  fileMenu->addAction( "Open...", this, SLOT(fileOpen()), QKeySequence(QKeySequence::Open) );
+  fileMenu->addAction( "Save As...", this, SLOT(fileSaveAs()), QKeySequence(QKeySequence::SaveAs) );
   fileMenu->addSeparator();
-  fileMenu->addAction( "Add background...", this, SLOT(loadBackground()) );
-  viewMenu->addAction( "Zoom in", this, SLOT(zoomIn()), QKeySequence(QKeySequence::ZoomIn) );
-  viewMenu->addAction( "Zoom out", this, SLOT(zoomOut()), QKeySequence(QKeySequence::ZoomOut) );
+  fileMenu->addAction( "Add background...", this, SLOT(fileLoadBackground()) );
+
+  viewMenu->addAction( "Zoom in", this, SLOT(viewZoomIn()), QKeySequence(QKeySequence::ZoomIn) );
+  viewMenu->addAction( "Zoom out", this, SLOT(viewZoomOut()), QKeySequence(QKeySequence::ZoomOut) );
+
   helpMenu->addAction( "Build with Qt"QT_VERSION_STR );
+
+  Q_UNUSED(editMenu)
+  Q_UNUSED(simMenu)
 
   // add status bar message
   statusBar()->showMessage( "QRoadTraffic has started" );
 }
 
-/************************************* newScene **************************************/
+/************************************* fileNew ***************************************/
 
-void  MainWindow::newScene()
+void  MainWindow::fileNew()
 {
   // if no scene items (only default top-left scene anchor) then nothing to do
   if ( m_scene->items().count() <= 1 ) return;
@@ -86,7 +91,7 @@ void  MainWindow::newScene()
     {
       case QMessageBox::Save:
         // if save not successful ask again
-        if ( !saveAsScene() ) break;
+        if ( !fileSaveAs() ) break;
 
       case QMessageBox::Discard:
         // start new simulation
@@ -103,20 +108,28 @@ void  MainWindow::newScene()
     }
 }
 
-/************************************* loadScene *************************************/
+/************************************* fileOpen **************************************/
 
-void  MainWindow::loadScene()
+void  MainWindow::fileOpen()
 {
   // get user to select filename and location
   QString filename = QFileDialog::getOpenFileName();
   if ( filename.isEmpty() ) return;
 
+  // load simulation from specified file
+  loadSimulation( filename );
+}
+
+/********************************** loadSimulation ***********************************/
+
+bool  MainWindow::loadSimulation( QString filename )
+{
   // open the file and check we can read from it
   QFile file( filename );
   if ( !file.open( QIODevice::ReadOnly ) )
   {
     statusBar()->showMessage( QString("Failed to open '%1'").arg(filename) );
-    return;
+    return false;
   }
 
   // open an xml stream reader and load simulation data
@@ -130,7 +143,8 @@ void  MainWindow::loadScene()
       if ( stream.name() == "qroadtraffic" )
         newScene->readStream( &stream );
       else
-        stream.raiseError( QString("Unrecognised element '%1'").arg(stream.name().toString()) );
+        stream.raiseError( QString("Unrecognised element '%1' in file '%2'").arg(stream.name().toString())
+                                                                            .arg(filename) );
     }
   }
 
@@ -140,27 +154,34 @@ void  MainWindow::loadScene()
     file.close();
     statusBar()->showMessage( QString("Failed to load '%1' (%2)").arg(filename).arg(stream.errorString()) );
     delete newScene;
-    return;
+    return false;
   }
 
   // close file, display new scene, delete old scene, and display useful message
   file.close();
-  QGraphicsView*   view = dynamic_cast<QGraphicsView*>( centralWidget() );
-  view->setScene( newScene );
+  m_view->setScene( newScene );
   delete m_scene;
   m_scene = newScene;
   statusBar()->showMessage( QString("Loaded '%1'").arg(filename) );
-  return;
+  return true;
 }
 
-/************************************ saveAsScene ************************************/
+/************************************ fileSaveAs *************************************/
 
-bool  MainWindow::saveAsScene()
+bool  MainWindow::fileSaveAs()
 {
   // get user to select filename and location
   QString filename = QFileDialog::getSaveFileName();
   if ( filename.isEmpty() ) return false;
 
+  // save simulation to specified file
+  return saveSimulation( filename );
+}
+
+/********************************** saveSimulation ***********************************/
+
+bool  MainWindow::saveSimulation( QString filename )
+{
   // open the file and check we can write to it
   QFile file( filename );
   if ( !file.open( QIODevice::WriteOnly ) )
@@ -224,30 +245,39 @@ bool  MainWindow::saveAsScene()
   return true;
 }
 
-/************************************** zoomIn ***************************************/
+/************************************ viewZoomIn *************************************/
 
-void  MainWindow::zoomIn()
+void  MainWindow::viewZoomIn()
 {
   // zoom in on main scene view
   m_view->scale( 1.1, 1.1 );
 }
 
-/************************************** zoomOut **************************************/
+/************************************ viewZoomOut ************************************/
 
-void  MainWindow::zoomOut()
+void  MainWindow::viewZoomOut()
 {
   // zoom out on main scene view
   m_view->scale( 1/1.1, 1/1.1 );
 }
 
-/*********************************** loadBackground **********************************/
+/********************************* fileLoadBackground ********************************/
 
-void  MainWindow::loadBackground()
+void  MainWindow::fileLoadBackground()
 {
   // get user to select filename and location
   QString filename = QFileDialog::getOpenFileName();
   if ( filename.isEmpty() ) return;
 
+  // load scene background image from specified file
+  loadBackground( filename );
+}
+
+/********************************* loadBackground ********************************/
+
+void  MainWindow::loadBackground( QString filename )
+{
+  // load scene background image from specified file
   QPixmap  map = QPixmap( filename );
   m_scene->addPixmap( map );
 }

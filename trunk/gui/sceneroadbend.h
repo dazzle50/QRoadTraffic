@@ -31,15 +31,16 @@ class SceneRoad;
 
 class SceneRoadBend : public QGraphicsPolygonItem
 {
-private:
-  SceneRoad*   road;                // road associated with this bend
-
 public:
-    SceneRoadBend( SceneRoad*, QPointF );                          // constructor
+  SceneRoadBend( SceneRoad*, QPointF );           // constructor
 
-    SceneRoad*  onRoad() { return road; }      // returns road associated with this bend
+  SceneRoad*  road()                              // returns road associated with this bend
+                { return m_road; }
 
-    QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
+  QVariant	  itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
+
+private:
+  SceneRoad*   m_road;                // road associated with this bend
 };
 
 #endif // SCENEROADBEND_H

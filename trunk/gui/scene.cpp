@@ -45,7 +45,7 @@ Scene::Scene( QWidget* mainWindow ) : QGraphicsScene()
   addLine( 0, 0, 0, 1, QPen(Qt::transparent, 1) );
 
   // initialise private variables
-  newRoad = 0;
+  m_newRoad = 0;
 }
 
 /********************************* contextMenuEvent **********************************/
@@ -58,14 +58,14 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   qreal  y   = event->scenePos().y();
 
   // if user in process of adding new road, show cancel new road context menu
-  if ( newRoad )
+  if ( m_newRoad )
   {
     QAction*  cancelNewRoad = menu.addAction("Cancel new road");
     if ( menu.exec( event->screenPos() ) == cancelNewRoad )
     {
-      removeItem( newRoad );
-      delete newRoad;
-      newRoad = 0;
+      removeItem( m_newRoad );
+      delete m_newRoad;
+      m_newRoad = 0;
     }
     return;
   }
@@ -111,8 +111,8 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == addRoad )
     {
-      newRoad = new SceneRoad( junction );
-      addItem( newRoad );
+      m_newRoad = new SceneRoad( junction );
+      addItem( m_newRoad );
 
       // move mouse cursor by one pixel to trigger a mouseMoveEvent
       QCursor::setPos( QCursor::pos() + QPoint(1,0) );
@@ -128,7 +128,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
     if ( action == delJunction )
     {
       if ( junction->hasRoads() )
-        QMessageBox::information( mainWindow, "Delete Junction",
+        QMessageBox::information( m_mainWindow, "Delete Junction",
                                   "Remove all associated roads before deleting junction.");
       else
       {
@@ -150,7 +150,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 
     if ( action == delBend )
     {
-      roadBend->onRoad()->deleteBend( roadBend );
+      roadBend->road()->deleteBend( roadBend );
       return;
     }
 
@@ -171,7 +171,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
 void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
 {
   // if not adding new road, just call base mousePressEvent to handle
-  if (newRoad == 0)
+  if ( m_newRoad == 0 )
   {
     QGraphicsScene::mousePressEvent( event );
     return;
@@ -184,14 +184,14 @@ void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
   if ( junction )
   {
     // don't complete road if clicked junction is new road start junction
-    if ( junction == newRoad->startJunction() ) return;
+    if ( junction == m_newRoad->startJunction() ) return;
 
     // don't complete road if road already exists between the two junctions
-    if ( roadExists( junction, newRoad->startJunction() )) return;
+    if ( roadExists( junction, m_newRoad->startJunction() )) return;
 
     // complete new road
-    newRoad->completeNewRoad( junction );
-    newRoad = 0;
+    m_newRoad->completeNewRoad( junction );
+    m_newRoad = 0;
   }
 }
 
@@ -200,7 +200,7 @@ void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
 void  Scene::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
 {
   // if adding new road, update new road position
-  if ( newRoad ) newRoad->updateNewRoad( event->scenePos() );
+  if ( m_newRoad ) m_newRoad->updateNewRoad( event->scenePos() );
 
   QGraphicsScene::mouseMoveEvent( event );
 }

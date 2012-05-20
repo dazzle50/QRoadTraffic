@@ -32,19 +32,21 @@ class SceneRoad;
 
 class SceneJunction : public QGraphicsEllipseItem
 {
-private:
-  QList<SceneRoad*>  roads;               // list of roads connected to junction
-
 public:
-  SceneJunction( Junction* );                                    // constructor
+  SceneJunction( Junction* );                       // constructor
 
-  void  addRoad( SceneRoad* road )  { roads << road; }                // add road to roads list
-  void  removeRoad( SceneRoad* road )  { roads.removeAll( road ); }   // remove road from roads list
-
-  bool  hasRoads() { return !roads.isEmpty(); }          // return TRUE if has associated roads
-  void  showProperties();                                // show properties dialog
+  void  addRoad( SceneRoad* road )                  // add road to roads list
+          { m_roads << road; }
+  void  removeRoad( SceneRoad* road )               // remove road from roads list
+          { m_roads.removeAll( road ); }
+  bool  hasRoads()                                  // return TRUE if has associated roads
+          { return !m_roads.isEmpty(); }
+  void  showProperties();                           // show properties dialog
 
   QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
+
+private:
+  QList<SceneRoad*>   m_roads;                      // list of roads connected to junction
 };
 
 #endif // SCENEJUNCTION_H
