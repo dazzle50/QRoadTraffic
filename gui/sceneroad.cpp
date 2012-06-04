@@ -28,6 +28,11 @@
 #include <QLineF>
 #include <QVector2D>
 #include <QGraphicsScene>
+#include <QTabWidget>
+#include <QFormLayout>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QTableWidget>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
@@ -40,6 +45,7 @@ SceneRoad::SceneRoad( SceneJunction* sj )
   // initialise private variables
   m_start = sj;
   m_end   = 0;
+  m_properties = 0;
 
   // create a new road starting from start junction
   qreal  x = sj->x();
@@ -177,12 +183,49 @@ void SceneRoad::completeNewRoad( SceneJunction* ej )
 
 void SceneRoad::showProperties()
 {
-  qDebug("SceneRoad::showProperties()  %p", this);
-  // TODO
+  // if properties window already exists, bring to front
+  if ( m_properties )
+  {
+     m_properties->show();
+     m_properties->raise();
+     return;
+  }
 
-  QWidget* prop = new QWidget( 0, Qt::Tool );
-  prop->setAttribute( Qt::WA_DeleteOnClose, true );
-  prop->resize( 200, 101 );
-  prop->setWindowTitle( "Road properties" );
-  prop->show();
+  // properies window doesn't exist, so create basic properties window widget
+  m_properties = new QTabWidget( 0 );
+  m_properties->setWindowFlags( Qt::Tool );
+  m_properties->setAttribute( Qt::WA_DeleteOnClose, false );
+  m_properties->setMinimumSize( 140, 95 );
+  m_properties->resize( 140, 95 );
+  m_properties->setWindowTitle( "Road properties" );
+  m_properties->show();
+
+  // create the two tab widgets
+  QWidget*       editWidget     = new QWidget();
+  QTableWidget*  sectionsWidget = new QTableWidget( 3, 3 );
+  m_properties->addTab( editWidget,     "Edit" );
+  m_properties->addTab( sectionsWidget, "Sections" );
+
+  // populate the data widget
+  editWidget->setContentsMargins( -5, -5, -5, -5 );
+  QFormLayout*  dataLayout  = new QFormLayout( editWidget );
+  m_name      = new QLineEdit( editWidget );
+  m_seLanes   = new QSpinBox( editWidget );
+  m_esLanes   = new QSpinBox( editWidget );
+  dataLayout->setVerticalSpacing( 3 );
+  dataLayout->addRow( "Name",      m_name );
+  dataLayout->addRow( "Lanes S-E", m_seLanes );
+  dataLayout->addRow( "Lanes E-S", m_esLanes );
+
+  // set edit widget values
+  m_name->setText( "R89" );
+  m_seLanes->setMaximum( 5 );
+  m_seLanes->setMinimum( 0 );
+  m_seLanes->setValue( 1 );
+  m_esLanes->setMaximum( 5 );
+  m_esLanes->setMinimum( 0 );
+  m_esLanes->setValue( 1 );
+
+  //=============================================================================================
+  // TODO lots more ........ !!!
 }

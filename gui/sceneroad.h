@@ -24,6 +24,10 @@
 class SceneJunction;
 class SceneRoadBend;
 
+class QTabWidget;
+class QLineEdit;
+class QSpinBox;
+
 #include <QGraphicsPolygonItem>
 
 /*************************************************************************************/
@@ -56,6 +60,11 @@ private:
   SceneJunction*           m_end;          // SceneJunction at road end
   QVector<QPointF>         m_bends;        // bends between the road start & end
   QVector<SceneRoadBend*>  m_sceneBends;   // SceneRoadBends associated with bends
+
+  QTabWidget*   m_properties;              // window for junction properties
+  QLineEdit*    m_name;                    // widget for name
+  QSpinBox*     m_seLanes;                 // widget for number of start->end lanes
+  QSpinBox*     m_esLanes;                 // widget for number of end->start lanes
 };
 
 #endif // SCENEROAD_H

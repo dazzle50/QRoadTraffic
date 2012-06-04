@@ -23,7 +23,12 @@
 #include "../sim/junction.h"
 
 #include <QPen>
-#include <QWidget>
+#include <QTabWidget>
+#include <QFormLayout>
+#include <QDoubleSpinBox>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QTableWidget>
 
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
@@ -33,6 +38,9 @@
 
 SceneJunction::SceneJunction( Junction* junction )
 {
+  // initialise variables
+  m_properties = 0;
+
   // junction scene item is a red circle with a black border
   float   radius = 6.0;
 
@@ -57,19 +65,58 @@ QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& v
       road->adjust();
   }
 
-  return QGraphicsItem::itemChange(change, value);
+  return QGraphicsItem::itemChange( change, value );
 }
 
 /********************************** showProperties ***********************************/
 
 void SceneJunction::showProperties()
 {
-  qDebug("SceneJunction::showProperties()  %p", this);
-  // TODO
+  // if properties window already exists, bring to front
+  if ( m_properties )
+  {
+     m_properties->show();
+     m_properties->raise();
+     return;
+  }
 
-  QWidget* prop = new QWidget( 0, Qt::Tool );
-  prop->setAttribute( Qt::WA_DeleteOnClose, true );
-  prop->resize( 200, 101 );
-  prop->setWindowTitle( "Junction properties" );
-  prop->show();
+  // properies window doesn't exist, so create basic properties window widget
+  m_properties = new QTabWidget( 0 );
+  m_properties->setWindowFlags( Qt::Tool );
+  m_properties->setAttribute( Qt::WA_DeleteOnClose, false );
+  m_properties->setMinimumSize( 150, 110 );
+  m_properties->resize( 150, 110 );
+  m_properties->setWindowTitle( "Junction properties" );
+  m_properties->show();
+
+  // create the three tab widgets
+  QWidget*       editWidget  = new QWidget();
+  QTableWidget*  roadsWidget = new QTableWidget( 3, 3 );
+  QWidget*       viewWidget  = new QWidget();
+  m_properties->addTab( editWidget,  "Edit" );
+  m_properties->addTab( roadsWidget, "Roads" );
+  m_properties->addTab( viewWidget,  "View" );
+
+  // populate the edit widget
+  editWidget->setContentsMargins( -5, -5, -5, -5 );
+  QFormLayout*  dataLayout  = new QFormLayout( editWidget );
+  m_name      = new QLineEdit( editWidget );
+  m_x         = new QDoubleSpinBox( editWidget );
+  m_y         = new QDoubleSpinBox( editWidget );
+  m_generator = new QComboBox( editWidget );
+  dataLayout->setVerticalSpacing( 3 );
+  dataLayout->addRow( "Name",       m_name );
+  dataLayout->addRow( "X",          m_x );
+  dataLayout->addRow( "Y",          m_y );
+  dataLayout->addRow( "Generator",  m_generator );
+
+  // set edit widget values
+  m_name->setText( "J123" );
+  m_x->setMaximum( 99999 );
+  m_x->setValue( x() );
+  m_y->setMaximum( 99999 );
+  m_y->setValue( y() );
+
+  //=============================================================================================
+  // TODO lots more ........ !!!
 }
