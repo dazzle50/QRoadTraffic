@@ -24,6 +24,11 @@
 class Junction;
 class SceneRoad;
 
+class QTabWidget;
+class QLineEdit;
+class QDoubleSpinBox;
+class QComboBox;
+
 #include <QGraphicsEllipseItem>
 
 /*************************************************************************************/
@@ -47,6 +52,12 @@ public:
 
 private:
   QList<SceneRoad*>   m_roads;                      // list of roads connected to junction
+
+  QTabWidget*         m_properties;                 // window for junction properties
+  QLineEdit*          m_name;                       // widget for name
+  QDoubleSpinBox*     m_x;                          // widget for x coordinates
+  QDoubleSpinBox*     m_y;                          // widget for y coordinates
+  QComboBox*          m_generator;                  // widget for traffic generator
 };
 
 #endif // SCENEJUNCTION_H
