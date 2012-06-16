@@ -39,6 +39,7 @@ public:
   void  removeRoad( SceneRoad* );                         // removes road from scene
   bool  roadExists( SceneJunction*, SceneJunction* );     // returns TRUE if road already exists
   void  readStream( QXmlStreamReader* );                  // read scene data from xml stream
+  void  deletePropertiesDialogs();                        // delete any properties dialog widgets
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
   void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
