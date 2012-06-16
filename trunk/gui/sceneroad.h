@@ -25,10 +25,10 @@ class SceneJunction;
 class SceneRoadBend;
 
 class QTabWidget;
-class QLineEdit;
-class QSpinBox;
 
 #include <QGraphicsPolygonItem>
+#include <QLineEdit>
+#include <QSpinBox>
 
 /*************************************************************************************/
 /********************** Represents a simulated road on GUI scene *********************/
@@ -45,6 +45,7 @@ public:
   void  addBend( QPointF );                              // adds bend at point
   void  bendMoved( SceneRoadBend* );                     // receives msg that bend has been moved
   void  showProperties();                                // show properties dialog
+  void  deleteProperties();                              // delete properties dialog
   void  deleteBend( SceneRoadBend* );                    // delete bend from road
   void  setBends( QList<SceneRoadBend*> );               // set bends to list
 
@@ -54,6 +55,17 @@ public:
                              { return m_end; }
   QVector<SceneRoadBend*>  roadBends()                   // return vector of bends
                              { return m_sceneBends; }
+  QString                  name()                        // return junction name
+                             { return m_name->text(); }
+  void                     setName( QString name )       // set junction name
+                             { m_name->setText( name ); }
+  int                      esLanes()                     // return number of lanes from end to start
+                             { return m_esLanes->value(); }
+  int                      seLanes()                     // return number of lanes from start to end
+                             { return m_seLanes->value(); }
+  void                     setLanes( int se, int es )    // set number of lanes
+                             { m_seLanes->setValue( se );
+                               m_esLanes->setValue( es ); }
 
 private:
   SceneJunction*           m_start;        // SceneJunction at road start

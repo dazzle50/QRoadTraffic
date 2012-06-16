@@ -26,8 +26,6 @@
 #include <QTabWidget>
 #include <QFormLayout>
 #include <QDoubleSpinBox>
-#include <QLineEdit>
-#include <QComboBox>
 #include <QTableWidget>
 
 /*************************************************************************************/
@@ -40,10 +38,14 @@ SceneJunction::SceneJunction( Junction* junction )
 {
   // initialise variables
   m_properties = 0;
+  m_name       = new QLineEdit();
+  m_generator  = new QComboBox();
+  m_generator->addItem( "None" );
 
   // junction scene item is a red circle with a black border
   float   radius = 6.0;
 
+  setToolTip( name() );
   setRect( -radius, -radius, 2*radius, 2*radius );
   setPos( junction->pos() );
   setPen( QPen(Qt::black) );
@@ -66,6 +68,16 @@ QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& v
   }
 
   return QGraphicsItem::itemChange( change, value );
+}
+
+/********************************* deleteProperties **********************************/
+
+void SceneJunction::deleteProperties()
+{
+  // delete pre-initialise properties widgets and dialog box
+  delete m_name;
+  delete m_generator;
+  if ( m_properties ) delete m_properties;
 }
 
 /********************************** showProperties ***********************************/
@@ -100,10 +112,8 @@ void SceneJunction::showProperties()
   // populate the edit widget
   editWidget->setContentsMargins( -5, -5, -5, -5 );
   QFormLayout*  dataLayout  = new QFormLayout( editWidget );
-  m_name      = new QLineEdit( editWidget );
-  m_x         = new QDoubleSpinBox( editWidget );
-  m_y         = new QDoubleSpinBox( editWidget );
-  m_generator = new QComboBox( editWidget );
+  m_x         = new QDoubleSpinBox();
+  m_y         = new QDoubleSpinBox();
   dataLayout->setVerticalSpacing( 3 );
   dataLayout->addRow( "Name",       m_name );
   dataLayout->addRow( "X",          m_x );
@@ -111,7 +121,6 @@ void SceneJunction::showProperties()
   dataLayout->addRow( "Generator",  m_generator );
 
   // set edit widget values
-  m_name->setText( "J123" );
   m_x->setMaximum( 99999 );
   m_x->setValue( x() );
   m_y->setMaximum( 99999 );

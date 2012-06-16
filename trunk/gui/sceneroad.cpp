@@ -30,8 +30,6 @@
 #include <QGraphicsScene>
 #include <QTabWidget>
 #include <QFormLayout>
-#include <QSpinBox>
-#include <QLineEdit>
 #include <QTableWidget>
 
 /*************************************************************************************/
@@ -46,6 +44,17 @@ SceneRoad::SceneRoad( SceneJunction* sj )
   m_start = sj;
   m_end   = 0;
   m_properties = 0;
+  m_name       = new QLineEdit();
+  m_seLanes    = new QSpinBox();
+  m_esLanes    = new QSpinBox();
+
+  // set edit widget values
+  m_seLanes->setMaximum( 5 );
+  m_seLanes->setMinimum( 0 );
+  m_seLanes->setValue( 1 );
+  m_esLanes->setMaximum( 5 );
+  m_esLanes->setMinimum( 0 );
+  m_esLanes->setValue( 1 );
 
   // create a new road starting from start junction
   qreal  x = sj->x();
@@ -179,6 +188,17 @@ void SceneRoad::completeNewRoad( SceneJunction* ej )
   // TODO create associated sim road ...
 }
 
+/********************************* deleteProperties **********************************/
+
+void SceneRoad::deleteProperties()
+{
+  // delete pre-initialise properties widgets and dialog box
+  delete m_name;
+  delete m_seLanes;
+  delete m_esLanes;
+  if ( m_properties ) delete m_properties;
+}
+
 /********************************** showProperties ***********************************/
 
 void SceneRoad::showProperties()
@@ -209,22 +229,10 @@ void SceneRoad::showProperties()
   // populate the data widget
   editWidget->setContentsMargins( -5, -5, -5, -5 );
   QFormLayout*  dataLayout  = new QFormLayout( editWidget );
-  m_name      = new QLineEdit( editWidget );
-  m_seLanes   = new QSpinBox( editWidget );
-  m_esLanes   = new QSpinBox( editWidget );
   dataLayout->setVerticalSpacing( 3 );
   dataLayout->addRow( "Name",      m_name );
   dataLayout->addRow( "Lanes S-E", m_seLanes );
   dataLayout->addRow( "Lanes E-S", m_esLanes );
-
-  // set edit widget values
-  m_name->setText( "R89" );
-  m_seLanes->setMaximum( 5 );
-  m_seLanes->setMinimum( 0 );
-  m_seLanes->setValue( 1 );
-  m_esLanes->setMaximum( 5 );
-  m_esLanes->setMinimum( 0 );
-  m_esLanes->setValue( 1 );
 
   //=============================================================================================
   // TODO lots more ........ !!!

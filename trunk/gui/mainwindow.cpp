@@ -74,6 +74,9 @@ MainWindow::MainWindow() : QMainWindow()
 
   // add status bar message
   statusBar()->showMessage( "QRoadTraffic has started" );
+
+  // TEMP
+  loadSimulation("C:\\Users\\Richard\\Documents\\Qt\\new.xml");
 }
 
 /************************************* fileNew ***************************************/
@@ -98,6 +101,7 @@ void  MainWindow::fileNew()
         {
           Scene*  newScene = new Scene( this );
           m_view->setScene( newScene );
+          m_scene->deletePropertiesDialogs();
           delete m_scene;
           m_scene = newScene;
         }
@@ -160,6 +164,7 @@ bool  MainWindow::loadSimulation( QString filename )
   // close file, display new scene, delete old scene, and display useful message
   file.close();
   m_view->setScene( newScene );
+  m_scene->deletePropertiesDialogs();
   delete m_scene;
   m_scene = newScene;
   statusBar()->showMessage( QString("Loaded '%1'").arg(filename) );
@@ -195,7 +200,7 @@ bool  MainWindow::saveSimulation( QString filename )
   stream.setAutoFormatting( true );
   stream.writeStartDocument();
   stream.writeStartElement( "qroadtraffic" );
-  stream.writeAttribute( "version", "2012-05" );
+  stream.writeAttribute( "version", "2012-06" );
   stream.writeAttribute( "user", QString(getenv("USERNAME")) );
   stream.writeAttribute( "when", QDateTime::currentDateTime().toString(Qt::ISODate) );
 
@@ -214,6 +219,8 @@ bool  MainWindow::saveSimulation( QString filename )
     stream.writeAttribute( "id", QString::number( i ) );
     stream.writeAttribute( "x" , QString::number( juncs.at(i)->x() ) );
     stream.writeAttribute( "y" , QString::number( juncs.at(i)->y() ) );
+    stream.writeAttribute( "name",      juncs.at(i)->name() );
+    stream.writeAttribute( "generator", juncs.at(i)->generator() );
   }
 
   // write road data to xml stream
@@ -223,8 +230,11 @@ bool  MainWindow::saveSimulation( QString filename )
     if ( road )
     {
       stream.writeStartElement( "road" );
-      stream.writeAttribute( "start", QString::number( juncs.indexOf(road->startJunction()) ) );
-      stream.writeAttribute( "end"  , QString::number( juncs.indexOf(road->endJunction()  ) ) );
+      stream.writeAttribute( "start"   , QString::number( juncs.indexOf(road->startJunction()) ) );
+      stream.writeAttribute( "end"     , QString::number( juncs.indexOf(road->endJunction()  ) ) );
+      stream.writeAttribute( "name"    , road->name() );
+      stream.writeAttribute( "se-lanes", QString::number( road->seLanes() ) );
+      stream.writeAttribute( "es-lanes", QString::number( road->esLanes() ) );
 
       // for each road write bend data to xml stream
       foreach( SceneRoadBend*  bend, road->roadBends() )

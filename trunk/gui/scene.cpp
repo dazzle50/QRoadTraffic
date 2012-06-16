@@ -145,8 +145,15 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   SceneRoadBend*  roadBend = dynamic_cast<SceneRoadBend*>( itemAt( x, y ) );
   if ( roadBend )
   {
+    QAction*  roadProp = menu.addAction("Road properties");
     QAction*  delBend  = menu.addAction("Delete bend");
     QAction*  action   = menu.exec( event->screenPos() );
+
+    if ( action == roadProp )
+    {
+      roadBend->road()->showProperties();
+      return;
+    }
 
     if ( action == delBend )
     {
@@ -205,6 +212,23 @@ void  Scene::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
   QGraphicsScene::mouseMoveEvent( event );
 }
 
+/****************************** deletePropertiesDialogs ******************************/
+
+void  Scene::deletePropertiesDialogs()
+{
+  // delete all properties dialog widgets, typically just before deleting scene
+    foreach( QGraphicsItem* item, items() )
+    {
+      // delete each junction properties dialog
+      SceneJunction*  junction = dynamic_cast<SceneJunction*>( item );
+      if ( junction ) junction->deleteProperties();
+
+      // delete each road properties dialog
+      SceneRoad*  road = dynamic_cast<SceneRoad*>( item );
+      if ( road ) road->deleteProperties();
+    }
+}
+
 /************************************ removeRoad *************************************/
 
 void  Scene::removeRoad( SceneRoad* road )
@@ -257,15 +281,20 @@ void  Scene::readStream( QXmlStreamReader* stream )
     {
       int id = -1;
       qreal x = 0.0, y = 0.0;
+      QString name, gen = "None";
       foreach( QXmlStreamAttribute attribute, stream->attributes() )
       {
-        if ( attribute.name() == "id" ) id = attribute.value().toString().toInt();
-        if ( attribute.name() == "x"  ) x  = attribute.value().toString().toDouble();
-        if ( attribute.name() == "y"  ) y  = attribute.value().toString().toDouble();
+        if ( attribute.name() == "id"        ) id   = attribute.value().toString().toInt();
+        if ( attribute.name() == "x"         ) x    = attribute.value().toString().toDouble();
+        if ( attribute.name() == "y"         ) y    = attribute.value().toString().toDouble();
+        if ( attribute.name() == "name"      ) name = attribute.value().toString();
+        if ( attribute.name() == "generator" ) gen  = attribute.value().toString();
       }
 
       Junction*       newJunc = new Junction( x, y, new TrafficGenerator() );
       SceneJunction*  sJunc   = new SceneJunction( newJunc );
+      sJunc->setName( name );
+      sJunc->setGenerator( gen );
       addItem( sJunc );
       junc_lookup.append( sJunc );
     }
@@ -274,14 +303,21 @@ void  Scene::readStream( QXmlStreamReader* stream )
     if ( stream->isStartElement() && stream->name() == "road" )
     {
       int s = -1, e = -1;
+      int seL = 1, esL = 1;
+      QString name;
       foreach( QXmlStreamAttribute attribute, stream->attributes() )
       {
-        if ( attribute.name() == "start" ) s = attribute.value().toString().toInt();
-        if ( attribute.name() == "end"   ) e = attribute.value().toString().toInt();
+        if ( attribute.name() == "start"    ) s    = attribute.value().toString().toInt();
+        if ( attribute.name() == "end"      ) e    = attribute.value().toString().toInt();
+        if ( attribute.name() == "name"     ) name = attribute.value().toString();
+        if ( attribute.name() == "se-lanes" ) seL  = attribute.value().toString().toInt();
+        if ( attribute.name() == "es-lanes" ) esL  = attribute.value().toString().toInt();
       }
 
       sRoad = new SceneRoad( junc_lookup.at(s) );
       sRoad->completeNewRoad( junc_lookup.at(e) );
+      sRoad->setName( name );
+      sRoad->setLanes( seL, esL );
       addItem( sRoad );
     }
 

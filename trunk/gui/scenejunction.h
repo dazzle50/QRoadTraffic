@@ -25,11 +25,11 @@ class Junction;
 class SceneRoad;
 
 class QTabWidget;
-class QLineEdit;
 class QDoubleSpinBox;
-class QComboBox;
 
 #include <QGraphicsEllipseItem>
+#include <QLineEdit>
+#include <QComboBox>
 
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
@@ -38,15 +38,24 @@ class QComboBox;
 class SceneJunction : public QGraphicsEllipseItem
 {
 public:
-  SceneJunction( Junction* );                       // constructor
+  SceneJunction( Junction* );                          // constructor
 
-  void  addRoad( SceneRoad* road )                  // add road to roads list
-          { m_roads << road; }
-  void  removeRoad( SceneRoad* road )               // remove road from roads list
-          { m_roads.removeAll( road ); }
-  bool  hasRoads()                                  // return TRUE if has associated roads
-          { return !m_roads.isEmpty(); }
-  void  showProperties();                           // show properties dialog
+  void     addRoad( SceneRoad* road )                  // add road to roads list
+             { m_roads << road; }
+  void     removeRoad( SceneRoad* road )               // remove road from roads list
+             { m_roads.removeAll( road ); }
+  bool     hasRoads()                                  // return TRUE if has associated roads
+             { return !m_roads.isEmpty(); }
+  void     showProperties();                           // show properties dialog
+  void     deleteProperties();                         // delete properties dialog
+  QString  name()                                      // return junction name
+             { return m_name->text(); }
+  void     setName( QString name )                     // set junction name
+             { m_name->setText( name ); }
+  QString  generator()                                 // return junction traffic generator name
+             { return m_generator->currentText(); }
+  void     setGenerator( QString gen )                 // set junction traffic generator
+             { m_generator->setItemText( 0, gen ); }
 
   QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 
