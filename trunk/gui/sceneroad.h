@@ -48,6 +48,7 @@ public:
   void  deleteProperties();                              // delete properties dialog
   void  deleteBend( SceneRoadBend* );                    // delete bend from road
   void  setBends( QList<SceneRoadBend*> );               // set bends to list
+  float angle( SceneJunction* );                         // return angle of road into junction
 
   SceneJunction*           startJunction()               // return start SceneJunction
                              { return m_start; }
