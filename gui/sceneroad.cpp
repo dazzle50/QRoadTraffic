@@ -188,6 +188,27 @@ void SceneRoad::completeNewRoad( SceneJunction* ej )
   // TODO create associated sim road ...
 }
 
+/*************************************** angle ***************************************/
+
+float SceneRoad::angle( SceneJunction* junc )
+{
+  // return angle of road into junction
+  QPointF  pos;
+  if ( junc == m_start )
+  {
+    if ( m_bends.isEmpty() ) pos = m_end->pos();
+    else                     pos = m_bends.first();
+  }
+  else
+  {
+    if ( m_bends.isEmpty() ) pos = m_start->pos();
+    else                     pos = m_bends.last();
+  }
+
+  QLineF line = QLineF( junc->pos(), pos );
+  return 90.0 - line.angle();
+}
+
 /********************************* deleteProperties **********************************/
 
 void SceneRoad::deleteProperties()

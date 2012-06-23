@@ -31,6 +31,13 @@ class QDoubleSpinBox;
 #include <QLineEdit>
 #include <QComboBox>
 
+typedef struct
+{
+  float angle;
+  int   inLanes;
+  int   outLanes;
+} RoadSummary;
+
 /*************************************************************************************/
 /******************** Represents a simulated junction on GUI scene *******************/
 /*************************************************************************************/
@@ -56,6 +63,7 @@ public:
              { return m_generator->currentText(); }
   void     setGenerator( QString gen )                 // set junction traffic generator
              { m_generator->setItemText( 0, gen ); }
+  QList<RoadSummary>  getRoadSummaries();              // return junction's road summaries
 
   QVariant	itemChange( GraphicsItemChange , const QVariant& );  // receive item changes
 

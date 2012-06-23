@@ -20,6 +20,7 @@
 
 #include "scenejunction.h"
 #include "sceneroad.h"
+#include "scenejunctionview.h"
 #include "../sim/junction.h"
 
 #include <QPen>
@@ -70,6 +71,34 @@ QVariant	SceneJunction::itemChange( GraphicsItemChange change, const QVariant& v
   return QGraphicsItem::itemChange( change, value );
 }
 
+/********************************* getRoadSummaries **********************************/
+
+QList<RoadSummary>  SceneJunction::getRoadSummaries()
+{
+  // collect summary info for each road connected to this junction
+  QList<RoadSummary>  roads;
+  foreach( SceneRoad* road, m_roads )
+  {
+    RoadSummary  summary;
+    summary.angle = road->angle( this );
+
+    if ( road->startJunction() == this )
+    {
+      summary.inLanes  = road->esLanes();
+      summary.outLanes = road->seLanes();
+    }
+    else
+    {
+      summary.inLanes  = road->seLanes();
+      summary.outLanes = road->esLanes();
+    }
+
+    roads.append( summary );
+  }
+
+  return roads;
+}
+
 /********************************* deleteProperties **********************************/
 
 void SceneJunction::deleteProperties()
@@ -104,7 +133,7 @@ void SceneJunction::showProperties()
   // create the three tab widgets
   QWidget*       editWidget  = new QWidget();
   QTableWidget*  roadsWidget = new QTableWidget( 3, 3 );
-  QWidget*       viewWidget  = new QWidget();
+  QWidget*       viewWidget  = new SceneJunctionView( this );
   m_properties->addTab( editWidget,  "Edit" );
   m_properties->addTab( roadsWidget, "Roads" );
   m_properties->addTab( viewWidget,  "View" );
