@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Richard Crook                                   *
+ *   Copyright (C) 2013 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,6 +41,7 @@
 
 Scene::Scene( QWidget* mainWindow ) : QGraphicsScene()
 {
+  Q_UNUSED( mainWindow )
   // create invisible item to provide default top-left anchor to scene
   addLine( 0, 0, 0, 1, QPen(Qt::transparent, 1) );
 
@@ -71,7 +72,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   }
 
   // if user clicked a road, display road context menu
-  SceneRoad*  road = dynamic_cast<SceneRoad*>( itemAt( x, y ) );
+  SceneRoad*  road = dynamic_cast<SceneRoad*>( itemAt( x, y, QTransform() ) );
   if ( road )
   {
     QAction*  roadProp = menu.addAction("Road properties");
@@ -101,7 +102,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   }
 
   // if user clicked a junction, display junction context menu
-  SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
+  SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y, QTransform() ) );
   if ( junction )
   {
     QAction*  junctionProp = menu.addAction("Junction properties");
@@ -142,7 +143,7 @@ void  Scene::contextMenuEvent( QGraphicsSceneContextMenuEvent* event )
   }
 
   // if user clicked a road bend, display road bend context menu
-  SceneRoadBend*  roadBend = dynamic_cast<SceneRoadBend*>( itemAt( x, y ) );
+  SceneRoadBend*  roadBend = dynamic_cast<SceneRoadBend*>( itemAt( x, y, QTransform() ) );
   if ( roadBend )
   {
     QAction*  roadProp = menu.addAction("Road properties");
@@ -187,7 +188,7 @@ void  Scene::mousePressEvent( QGraphicsSceneMouseEvent* event )
   // check if user clicked a juntion to end new road
   qreal  x   = event->scenePos().x();
   qreal  y   = event->scenePos().y();
-  SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y ) );
+  SceneJunction*  junction = dynamic_cast<SceneJunction*>( itemAt( x, y, QTransform() ) );
   if ( junction )
   {
     // don't complete road if clicked junction is new road start junction
@@ -254,12 +255,12 @@ bool  Scene::roadExists( SceneJunction* j1, SceneJunction* j2 )
     SceneRoad*  road = dynamic_cast<SceneRoad*>( item );
     if ( road )
     {
-      if ( j1 == road->startJunction() && j2 == road->endJunction() ) return TRUE;
-      if ( j2 == road->startJunction() && j1 == road->endJunction() ) return TRUE;
+      if ( j1 == road->startJunction() && j2 == road->endJunction() ) return true;
+      if ( j2 == road->startJunction() && j1 == road->endJunction() ) return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /************************************ readStream *************************************/
@@ -297,6 +298,7 @@ void  Scene::readStream( QXmlStreamReader* stream )
       sJunc->setGenerator( gen );
       addItem( sJunc );
       junc_lookup.append( sJunc );
+      Q_UNUSED( id )
     }
 
     // create roads
