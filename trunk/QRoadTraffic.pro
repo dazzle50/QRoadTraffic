@@ -1,6 +1,8 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-11-21T10:07:30
 # -------------------------------------------------
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QRoadTraffic
 TEMPLATE = app
 SOURCES += main.cpp \

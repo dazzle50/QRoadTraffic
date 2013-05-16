@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Richard Crook                                   *
+ *   Copyright (C) 2013 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,7 +47,7 @@ MainWindow::MainWindow() : QMainWindow()
   m_view->setAlignment( Qt::AlignLeft | Qt::AlignTop );
   m_view->setFrameStyle( 0 );
   m_view->setRenderHint( QPainter::Antialiasing );
-  m_view->setMouseTracking( TRUE );
+  m_view->setMouseTracking( true );
   setCentralWidget( m_view );
 
   // add drop down menus

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2012 by Richard Crook                                   *
+ *   Copyright (C) 2013 by Richard Crook                                   *
  *   http://code.google.com/p/qroadtraffic/                                *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,6 +31,8 @@
 SceneVehicle::SceneVehicle( Scene* scene, Vehicle* vehicle )
 {
   // TODO .................
+  Q_UNUSED( scene )
+  Q_UNUSED( vehicle )
   qDebug("DEBUG SceneVehicle::SceneVehicle - VEHICLE xxxxxx");
 
 }
