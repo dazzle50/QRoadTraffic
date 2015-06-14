@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2013 by Richard Crook                                   *
- *   http://code.google.com/p/qroadtraffic/                                *
+ *   Copyright (C) 2015 by Richard Crook                                   *
+ *   https://github.com/dazzle50/QRoadTraffic                              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

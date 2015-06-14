@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qroadtraffic version="2012-06" user="Richard" when="2015-06-14T13:59:26">
+    <junction id="0" x="601.934" y="282.237" name="" generator="None"/>
+    <junction id="1" x="688.658" y="446.961" name="" generator="None"/>
+    <junction id="2" x="578.329" y="474.158" name="" generator="None"/>
+    <junction id="3" x="518.803" y="511.105" name="" generator="None"/>
+    <junction id="4" x="387.948" y="537.277" name="" generator="None"/>
+    <junction id="5" x="293.013" y="537.277" name="" generator="None"/>
+    <junction id="6" x="552" y="272" name="" generator="None"/>
+    <junction id="7" x="293" y="512" name="" generator="None"/>
+    <junction id="8" x="457" y="194" name="" generator="None"/>
+    <junction id="9" x="226" y="372" name="" generator="None"/>
+    <junction id="10" x="188" y="422" name="" generator="None"/>
+    <junction id="11" x="170" y="376" name="" generator="None"/>
+    <road start="5" end="7" name="" se-lanes="1" es-lanes="1"/>
+    <road start="4" end="5" name="" se-lanes="1" es-lanes="1"/>
+    <road start="3" end="4" name="" se-lanes="1" es-lanes="1"/>
+    <road start="2" end="3" name="" se-lanes="1" es-lanes="1"/>
+    <road start="1" end="2" name="" se-lanes="1" es-lanes="1"/>
+    <road start="0" end="1" name="" se-lanes="1" es-lanes="1">
+        <bend x="606.04" y="312.513"/>
+        <bend x="684.04" y="420.79"/>
+    </road>
+    <road start="6" end="0" name="" se-lanes="1" es-lanes="1"/>
+    <road start="11" end="8" name="" se-lanes="1" es-lanes="1">
+        <bend x="152.921" y="333.553"/>
+        <bend x="24.1184" y="203.724"/>
+        <bend x="200.132" y="53.3684"/>
+        <bend x="229.895" y="53.3684"/>
+    </road>
+    <road start="7" end="10" name="" se-lanes="1" es-lanes="1"/>
+    <road start="6" end="7" name="" se-lanes="1" es-lanes="1">
+        <bend x="492.632" y="332.013"/>
+        <bend x="317.645" y="476.724"/>
+    </road>
+    <road start="8" end="6" name="" se-lanes="1" es-lanes="1"/>
+    <road start="9" end="8" name="" se-lanes="1" es-lanes="1">
+        <bend x="285.829" y="377.684"/>
+        <bend x="321.237" y="355.105"/>
+    </road>
+    <road start="9" end="11" name="" se-lanes="1" es-lanes="1"/>
+    <road start="10" end="9" name="" se-lanes="1" es-lanes="1"/>
+    <road start="11" end="10" name="" se-lanes="1" es-lanes="1"/>
+</qroadtraffic>
