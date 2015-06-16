@@ -31,7 +31,7 @@ class QDoubleSpinBox;
 #include <QLineEdit>
 #include <QComboBox>
 
-typedef struct
+typedef struct RoadSummary
 {
   float angle;
   int   inLanes;

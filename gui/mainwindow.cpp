@@ -27,7 +27,6 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QGraphicsView>
-#include <QPixmap>
 #include <QFileDialog>
 #include <QXmlStreamWriter>
 #include <QDateTime>
@@ -66,8 +65,9 @@ MainWindow::MainWindow() : QMainWindow()
 
   viewMenu->addAction( "Zoom in", this, SLOT(viewZoomIn()), QKeySequence(QKeySequence::ZoomIn) );
   viewMenu->addAction( "Zoom out", this, SLOT(viewZoomOut()), QKeySequence(QKeySequence::ZoomOut) );
+  viewMenu->addAction( "Zoom normal", this, SLOT(viewZoomNormal()), QKeySequence(Qt::CTRL + Qt::Key_0) );
 
-  helpMenu->addAction( "Build with Qt"QT_VERSION_STR );
+  helpMenu->addAction( "Build with Qt" QT_VERSION_STR );
 
   Q_UNUSED(editMenu)
   Q_UNUSED(simMenu)
@@ -76,7 +76,7 @@ MainWindow::MainWindow() : QMainWindow()
   statusBar()->showMessage( "QRoadTraffic has started" );
 
   // TEMP
-  loadSimulation("C:\\Users\\Richard\\Documents\\Qt\\new.xml");
+  loadSimulation("C:\\Users\\Richard\\Documents\\Qt\\QRoadTraffic\\!tests\\!default.xml");
 }
 
 /************************************* fileNew ***************************************/
@@ -145,7 +145,16 @@ bool  MainWindow::loadSimulation( QString filename )
     if ( stream.isStartElement() )
     {
       if ( stream.name() == "qroadtraffic" )
+      {
+        foreach( QXmlStreamAttribute attribute, stream.attributes() )
+          if ( attribute.name() == "background" )
+          {
+            QString background = QFileInfo( filename ).absolutePath() + "/" + attribute.value().toString();
+            if ( QFile( background ).exists() ) newScene->loadBackground( background );
+          }
+
         newScene->readStream( &stream );
+      }
       else
         stream.raiseError( QString("Unrecognised element '%1' in file '%2'").arg(stream.name().toString())
                                                                             .arg(filename) );
@@ -203,6 +212,7 @@ bool  MainWindow::saveSimulation( QString filename )
   stream.writeAttribute( "version", "2012-06" );
   stream.writeAttribute( "user", QString(getenv("USERNAME")) );
   stream.writeAttribute( "when", QDateTime::currentDateTime().toString(Qt::ISODate) );
+  stream.writeAttribute( "background", m_scene->backgroundFile() );
 
   // collect pointers to all scene junctions into a list
   QList<SceneJunction*> juncs;
@@ -260,7 +270,7 @@ bool  MainWindow::saveSimulation( QString filename )
 void  MainWindow::viewZoomIn()
 {
   // zoom in on main scene view
-  m_view->scale( 1.1, 1.1 );
+  m_view->scale( 1.1892, 1.1892 );
 }
 
 /************************************ viewZoomOut ************************************/
@@ -268,7 +278,15 @@ void  MainWindow::viewZoomIn()
 void  MainWindow::viewZoomOut()
 {
   // zoom out on main scene view
-  m_view->scale( 1/1.1, 1/1.1 );
+  m_view->scale( 1/1.1892, 1/1.1892 );
+}
+
+/*********************************** viewZoomNormal **********************************/
+
+void  MainWindow::viewZoomNormal()
+{
+  // set zoom to normal on main scene view
+  m_view->setTransform( QTransform() );
 }
 
 /********************************* fileLoadBackground ********************************/
@@ -280,14 +298,5 @@ void  MainWindow::fileLoadBackground()
   if ( filename.isEmpty() ) return;
 
   // load scene background image from specified file
-  loadBackground( filename );
-}
-
-/********************************* loadBackground ********************************/
-
-void  MainWindow::loadBackground( QString filename )
-{
-  // load scene background image from specified file
-  QPixmap  map = QPixmap( filename );
-  m_scene->addPixmap( map );
+  m_scene->loadBackground( filename );
 }

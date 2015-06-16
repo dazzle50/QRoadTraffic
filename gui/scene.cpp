@@ -32,6 +32,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QXmlStreamReader>
+#include <QFileInfo>
 
 /*************************************************************************************/
 /******************** Scene representing the simulated landscape *********************/
@@ -261,6 +262,16 @@ bool  Scene::roadExists( SceneJunction* j1, SceneJunction* j2 )
   }
 
   return false;
+}
+
+/********************************* loadBackground ********************************/
+
+void  Scene::loadBackground( QString filename )
+{
+  // load scene background image from specified file
+  QPixmap  map = QPixmap( filename );
+  addPixmap( map );
+  m_background = QFileInfo( filename ).fileName();
 }
 
 /************************************ readStream *************************************/

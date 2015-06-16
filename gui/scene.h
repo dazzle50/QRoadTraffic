@@ -39,7 +39,10 @@ public:
   void  removeRoad( SceneRoad* );                         // removes road from scene
   bool  roadExists( SceneJunction*, SceneJunction* );     // returns TRUE if road already exists
   void  readStream( QXmlStreamReader* );                  // read scene data from xml stream
+  void  loadBackground( QString );                        // load scene background image from specified file
   void  deletePropertiesDialogs();                        // delete any properties dialog widgets
+
+  QString backgroundFile() { return m_background; }       // return background filename
 
   void  contextMenuEvent( QGraphicsSceneContextMenuEvent* ); // receive context menu events
   void  mouseMoveEvent( QGraphicsSceneMouseEvent* );         // receive mouse move events
@@ -48,6 +51,7 @@ public:
 private:
   SceneRoad*  m_newRoad;                // null, unless adding a new road
   QWidget*    m_mainWindow;             // pointer to application main window
+  QString     m_background;             // name of background image file
 };
 
 #endif  // SCENE_H

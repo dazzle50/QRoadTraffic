@@ -39,13 +39,13 @@ public:
 public slots:
   void  viewZoomIn();                     // slot to receive zoom in action signal
   void  viewZoomOut();                    // slot to receive zoom out action signal
+  void  viewZoomNormal();                 // slot to receive zoom normal action signal
 
   void  fileLoadBackground();             // slot to receive load background action signal
   void  fileNew();                        // slot to receive new scene action signal
   void  fileOpen();                       // slot to receive load scene action signal
   bool  fileSaveAs();                     // slot to receive save as scene action signal
 
-  void  loadBackground( QString );        // load scene background image from specified file
   bool  loadSimulation( QString );        // load simulation from specified xml file
   bool  saveSimulation( QString );        // save simulation to specified xml file
 
